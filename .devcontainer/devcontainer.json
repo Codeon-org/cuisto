@@ -1,0 +1,46 @@
+{
+    "name": "Cuisto",
+    // "runArgs": ["--network=bridge"],
+    "image": "mcr.microsoft.com/devcontainers/base:alpine-3.19",
+    "features": {
+        "ghcr.io/cirolosapio/devcontainers-features/alpine-node:0": {
+            "corepack": true,
+            "pnpmVersion": "latest"
+        },
+        "ghcr.io/devcontainers-contrib/features/typescript:2": {
+            "version": "latest"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "EditorConfig.EditorConfig",
+                "dbaeumer.vscode-eslint",
+                "christian-kohler.npm-intellisense",
+                "esbenp.prettier-vscode",
+                "Vue.volar",
+                "bradlc.vscode-tailwindcss",
+                "Nuxtr.nuxtr-vscode",
+                "Prisma.prisma"
+            ],
+            "settings": {
+                "[javascript][typescript][vue]": {
+                    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+                    "editor.formatOnSave": false
+                },
+                "[css][scss][sass][less][json][jsonc][yaml][markdown]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "tailwindCSS.classAttributes": ["class", "active-class", "inactive-class"],
+                "eslint.validate": ["javascript", "typescript", "vue"],
+                "eslint.useFlatConfig": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll": "never",
+                    "source.fixAll.eslint": "explicit",
+                    "source.organizeImports": "never"
+                }
+            }
+        }
+    }
+}
