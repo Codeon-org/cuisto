@@ -1,18 +1,36 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "dependencies": {
-    "nuxt": "^3.15.4",
-    "vue": "latest",
-    "vue-router": "latest"
-  },
-  "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
+    "name": "codeon-cuisto",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev -o --no-fork",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
+    },
+    "dependencies": {
+        "@nuxt/image": "1.9.0",
+        "@nuxtjs/device": "^3.2.4",
+        "@pinia/nuxt": "0.9.0",
+        "@prisma/client": "6.3.0",
+        "@prisma/nuxt": "^0.3.0",
+        "@vueuse/nuxt": "12.5.0",
+        "nuxt": "^3.15.4",
+        "pinia": "^2.3.0",
+        "pinia-plugin-persistedstate": "^4.2.0",
+        "vue": "latest",
+        "vue-router": "latest"
+    },
+    "devDependencies": {
+        "@nuxt/eslint": "^1.0.0",
+        "eslint": "^9.19.0",
+        "prisma": "6.3.0",
+        "sass-embedded": "^1.83.4",
+        "typescript": "^5.7.3"
+    },
+    "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
 }
+
