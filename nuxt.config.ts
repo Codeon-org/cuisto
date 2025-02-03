@@ -10,7 +10,9 @@ export default defineNuxtConfig({
         "pinia-plugin-persistedstate/nuxt",
     ],
     ssr: true,
-    devtools: { enabled: true },
+    devtools: {
+        enabled: true,
+    },
     router: {
         options: {
             scrollBehaviorType: "smooth"
