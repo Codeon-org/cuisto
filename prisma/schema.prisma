@@ -7,12 +7,77 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  Admin
+  Editor
+  Viewer
 }
 
 model User {
-    id Int @id @default(autoincrement())
-    username String @unique
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @default(now()) @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  role      Role
+  username  String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+}
+
+model Unit {
+  id               Int       @id @default(autoincrement())
+  name             String    @unique
+  symbol           String    @unique
+  conversionFactor Float?
+  baseUnitId       Int?
+  baseUnit         Unit?     @relation("BaseUnit", fields: [baseUnitId], references: [id])
+  variations       Unit[]    @relation("BaseUnit")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now()) @map("updated_at")
+  products         Product[]
+
+  recipes RecipeProduct[]
+}
+
+model Product {
+  id        Int      @id @default(autoincrement())
+  name      String
+  unitId    Int
+  unit      Unit     @relation(fields: [unitId], references: [id], onDelete: Restrict)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  recipes RecipeProduct[]
+}
+
+model Recipe {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @map("updated_at")
+
+  // Many-to-Many relation through RecipeProduct
+  products RecipeProduct[]
+}
+
+model RecipeProduct {
+  id Int @id @default(autoincrement())
+
+  // Many-to-Many between Recipe and Product
+  recipeId Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  // Quantity and unit for the product in this specific recipe
+  quantity Float
+  unitId   Int
+  unit     Unit  @relation(fields: [unitId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@unique([recipeId, productId])
 }

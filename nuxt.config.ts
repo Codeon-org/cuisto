@@ -5,7 +5,6 @@ export default defineNuxtConfig({
         "@nuxtjs/device",
         "@vueuse/nuxt",
         "@nuxt/image",
-        "@prisma/nuxt",
         "@pinia/nuxt",
         "pinia-plugin-persistedstate/nuxt",
     ],
