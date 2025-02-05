@@ -5,3 +5,7 @@ indent_style = space
 tab_width = 4
 trim_trailing_whitespace = true
 charset = utf-8
+
+[*.prisma]
+indent_size = 2
+tab_width = 2

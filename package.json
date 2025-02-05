@@ -10,7 +10,9 @@
         "postinstall": "nuxt prepare",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
-        "migrate": "prisma migrate dev && prisma migrate deploy && prisma generate"
+        "migrate": "prisma migrate dev && prisma migrate deploy && prisma generate",
+        "typecheck": "nuxi typecheck",
+        "test": "vitest"
     },
     "dependencies": {
         "@nuxt/image": "1.9.0",
@@ -26,10 +28,15 @@
     },
     "devDependencies": {
         "@nuxt/eslint": "^1.0.0",
+        "@nuxt/test-utils": "^3.15.4",
+        "@vue/test-utils": "^2.4.6",
         "eslint": "^9.19.0",
+        "happy-dom": "^16.8.1",
+        "playwright-core": "^1.50.1",
         "prisma": "^6.3.1",
         "sass-embedded": "^1.83.4",
-        "typescript": "^5.7.3"
+        "typescript": "^5.7.3",
+        "vitest": "^3.0.5"
     },
     "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
 }

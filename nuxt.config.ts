@@ -6,6 +6,7 @@ export default defineNuxtConfig({
         "@vueuse/nuxt",
         "@nuxt/image",
         "@pinia/nuxt",
+        "@nuxt/test-utils/module",
         "pinia-plugin-persistedstate/nuxt",
     ],
     ssr: true,
