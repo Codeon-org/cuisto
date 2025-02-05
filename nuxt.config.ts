@@ -4,10 +4,8 @@ export default defineNuxtConfig({
         "@nuxt/eslint",
         "@nuxtjs/device",
         "@vueuse/nuxt",
-        "@nuxt/image",
         "@pinia/nuxt",
         "@nuxt/test-utils/module",
-        "@vite-pwa/nuxt",
         "pinia-plugin-persistedstate/nuxt",
     ],
     ssr: true,
@@ -39,13 +37,4 @@ export default defineNuxtConfig({
         storage: "localStorage",
         key: "cuisto_%id"
     },
-    pwa: {
-        manifest: {
-            name: "Cuisto",
-            short_name: "Cuisto",
-            description: "Cuisto is a recipe sharing platform.",
-            theme_color: "#000000",
-            lang: "fr",
-        },
-    }
 });
