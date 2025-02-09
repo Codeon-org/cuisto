@@ -1,9 +1,8 @@
-FROM  node:22 as base
-RUN npm install -g pnpm typescript
+FROM node:22 as base
+RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh -
 WORKDIR /app
 
 FROM base as dev
-CMD ["tail", "-f", "/dev/null"]  # 🛑 Keeps container running without starting a process
 
 FROM base as build
 COPY . .

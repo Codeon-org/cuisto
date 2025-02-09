@@ -1,10 +1,6 @@
 <template>
-    <ubutton>Hello World</ubutton>
+    <div>
+        <UButton>Hello World</UButton>
+        <Ulink>Test</Ulink>
+    </div>
 </template>
-
-<script lang="ts" setup>
-</script>
-
-<style>
-
-</style>

@@ -1,8 +1,9 @@
 {
     "name": "Cuisto",
+	"forwardPorts": [3000, 5555],
     "dockerComposeFile": ["../docker-compose.yaml"],
     "service": "app",
-    "workspaceFolder": "/app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
     "features": {
         "ghcr.io/devcontainers/features/github-cli:1": {
             "version": "latest"

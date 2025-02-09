@@ -8,7 +8,6 @@ export default defineNuxtConfig({
         "@nuxt/test-utils/module",
         "pinia-plugin-persistedstate/nuxt",
         "@prisma/nuxt",
-        "@nuxt/ui"
     ],
     ssr: true,
     devtools: {
@@ -22,18 +21,10 @@ export default defineNuxtConfig({
             scrollBehaviorType: "smooth"
         }
     },
-    ui: {
-        colorMode: true,
-        fonts: true,
-        theme: {
-            transitions: true,
-            colors: ["primary", "secondary", "success", "info", "warning", "error"]
-        },
-        devtools: {
-            enabled: true
-        },
+    future: {
+        compatibilityVersion: 4
     },
-    compatibilityDate: "2024-11-01",
+    compatibilityDate: "2025-02-09",
     eslint: {
         config: {
             stylistic: {
