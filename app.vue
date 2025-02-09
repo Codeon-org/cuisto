@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <UApp>
         <NuxtLoadingIndicator />
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
         <!-- <UNotifications /> -->
         <!-- <UModals /> -->
-    </div>
+    </UApp>
 </template>
 
 <script setup lang="ts">
