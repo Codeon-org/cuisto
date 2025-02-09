@@ -1,11 +1,15 @@
 services:
     database:
         container_name: cuisto-database
-        image: postgres:17-alpine
+        image: postgres:16.4-alpine
         environment:
             POSTGRES_DB: cuisto
             POSTGRES_USER: user
             POSTGRES_PASSWORD: password
+        healthcheck:
+            test: ["CMD", "pg_isready", "-U", "user"]
+            interval: 5s
+            retries: 5
         volumes:
             - cuisto_db_data:/var/lib/postgresql/data:rw
 
@@ -18,7 +22,6 @@ services:
         volumes:
             - .:/app
         command: sleep infinity
-        network_mode: service:database
         depends_on:
             - database
 

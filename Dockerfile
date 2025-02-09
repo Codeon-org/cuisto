@@ -1,5 +1,5 @@
 FROM node:22 as base
-RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh -
+RUN npm i -g pnpm
 WORKDIR /app
 
 FROM base as dev

@@ -1,6 +1,5 @@
 <template>
     <div>
-        <UButton>Hello World</UButton>
-        <Ulink>Test</Ulink>
+        Hello World
     </div>
 </template>

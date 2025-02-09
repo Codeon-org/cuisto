@@ -9,13 +9,11 @@ export default defineNuxtConfig({
         "pinia-plugin-persistedstate/nuxt",
         "@prisma/nuxt",
     ],
-    ssr: true,
+    ssr: false,
     devtools: {
         enabled: true,
     },
-    css: [
-        "~/assets/css/main.css"
-    ],
+    css: [],
     router: {
         options: {
             scrollBehaviorType: "smooth"
