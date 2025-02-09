@@ -7,6 +7,7 @@ export default defineNuxtConfig({
         "@pinia/nuxt",
         "@nuxt/test-utils/module",
         "pinia-plugin-persistedstate/nuxt",
+        "@prisma/nuxt",
     ],
     ssr: true,
     devtools: {

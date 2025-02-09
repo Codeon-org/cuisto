@@ -1,13 +1,10 @@
 {
     "name": "Cuisto",
-    // "runArgs": ["--network=bridge"],
-    "image": "mcr.microsoft.com/devcontainers/base:alpine-3.19",
+    "dockerComposeFile": ["../docker-compose.yaml"],
+    "service": "app",
+    "workspaceFolder": "/app",
     "features": {
-        "ghcr.io/cirolosapio/devcontainers-features/alpine-node:0": {
-            "corepack": true,
-            "pnpmVersion": "latest"
-        },
-        "ghcr.io/devcontainers-contrib/features/typescript:2": {
+        "ghcr.io/devcontainers/features/github-cli:1": {
             "version": "latest"
         }
     },

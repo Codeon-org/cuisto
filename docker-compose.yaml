@@ -1,0 +1,26 @@
+services:
+    database:
+        container_name: cuisto-database
+        image: postgres:17-alpine
+        environment:
+            POSTGRES_DB: cuisto
+            POSTGRES_USER: cuisto
+            POSTGRES_PASSWORD: password
+        volumes:
+            - cuisto_db_data:/var/lib/postgresql/data:rw
+
+    app:
+        container_name: cuisto-app
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: dev
+        volumes:
+            - .:/app
+        ports:
+            - 3000:3000
+        depends_on:
+            - database
+
+volumes:
+    cuisto_db_data:
