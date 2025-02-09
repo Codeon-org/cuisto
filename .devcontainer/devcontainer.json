@@ -29,6 +29,12 @@
                     "editor.formatOnSave": true,
                     "editor.defaultFormatter": "esbenp.prettier-vscode"
                 },
+                "files.associations": {
+                    "*.css": "tailwindcss"
+                },
+                "editor.quickSuggestions": {
+                    "strings": "on"
+                },
                 "tailwindCSS.classAttributes": ["class", "active-class", "inactive-class"],
                 "eslint.validate": ["javascript", "typescript", "vue"],
                 "eslint.useFlatConfig": true,

@@ -1,5 +1,5 @@
 <template>
-    <h1>Hello World</h1>
+    <ubutton>Hello World</ubutton>
 </template>
 
 <script lang="ts" setup>
