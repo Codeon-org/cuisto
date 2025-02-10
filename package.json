@@ -12,6 +12,7 @@
         "lint:fix": "eslint . --fix",
         "migrate": "prisma migrate dev && prisma migrate deploy && prisma generate",
         "typecheck": "nuxi typecheck",
+        "cleanup": "nuxi cleanup",
         "test": "vitest"
     },
     "dependencies": {
@@ -25,7 +26,8 @@
         "pinia": "^2.3.0",
         "pinia-plugin-persistedstate": "^4.2.0",
         "vue": "latest",
-        "vue-router": "latest"
+        "vue-router": "latest",
+        "winston": "^3.17.0"
     },
     "devDependencies": {
         "@nuxt/eslint": "^1.0.0",
