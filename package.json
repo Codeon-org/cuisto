@@ -22,12 +22,15 @@
         "@prisma/client": "6.3.1",
         "@prisma/nuxt": "0.3.0",
         "@vueuse/nuxt": "12.5.0",
+        "bcrypt": "^5.1.1",
+        "jsonwebtoken": "^9.0.2",
         "nuxt": "^3.15.4",
         "pinia": "^2.3.0",
         "pinia-plugin-persistedstate": "^4.2.0",
         "vue": "latest",
         "vue-router": "latest",
-        "winston": "^3.17.0"
+        "winston": "^3.17.0",
+        "zod": "^3.24.1"
     },
     "devDependencies": {
         "@nuxt/eslint": "^1.0.0",
