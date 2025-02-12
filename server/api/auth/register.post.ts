@@ -1,13 +1,51 @@
+import argon2 from "argon2";
 import { z } from "zod";
-import getValidatedBody from "~/server/utils/getValidatedBody";
+
+const schema = z.object({
+    username: validation.username,
+    email: validation.email,
+    password: validation.password,
+});
 
 export default defineEventHandler(async (event) =>
 {
-    const body = await getValidatedBody(event, z.object({
-        username: validation.username,
-        email: validation.email,
-        password: validation.password,
-    }));
+    const body = await readValidatedBody(event, schema.parse);
 
-    return { message: "Validation successful", user: body };
+    const existingUser = await prisma.user.findFirst({
+        where: {
+            OR: [
+                { username: body.username },
+                { email: body.email }
+            ]
+        }
+    });
+
+    if (existingUser)
+    {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Username or email already exists"
+        });
+    }
+
+    const hashedPassword = await argon2.hash(body.password, {
+        type: argon2.argon2id, // Recommended variant
+        memoryCost: 2 ** 16,
+        timeCost: 3,
+        parallelism: 1,
+    });
+
+    const user = await prisma.user.create({
+        data: {
+            username: body.username,
+            email: body.email,
+            password: hashedPassword,
+            role: "Admin",
+        },
+        select: {
+            id: true
+        }
+    });
+
+    return { ...user };
 });
