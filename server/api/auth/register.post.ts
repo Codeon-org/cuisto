@@ -1,6 +1,5 @@
 import argon2 from "argon2";
 import { z } from "zod";
-import authMiddleware from "~/server/middleware/auth";
 
 const schema = z.object({
     username: validation.username,
@@ -10,8 +9,6 @@ const schema = z.object({
 
 export default defineEventHandler(async (event) =>
 {
-    await authMiddleware(event);
-
     const body = await readValidatedBody(event, schema.parse);
 
     const existingUser = await prisma.user.findFirst({

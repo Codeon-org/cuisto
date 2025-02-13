@@ -1,4 +1,6 @@
 export default defineEventHandler(async (event) =>
 {
-    logger.info(event.context.auth.id);
+    const user = await denyAccessUnlessGranted(event);
+
+    logger.info(user);
 });
