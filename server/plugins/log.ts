@@ -1,3 +1,6 @@
+import type { H3Error } from "h3";
+import type { ErrorEvent, CaptureError } from "nitropack";
+
 export default defineNitroPlugin((nitroApp) =>
 {
     nitroApp.hooks.hook("request", (request) =>
@@ -5,9 +8,9 @@ export default defineNitroPlugin((nitroApp) =>
         logger.info(`${request.node.req.method} ${request.node.req.url}`);
     });
 
-    nitroApp.hooks.hook("error", (error) =>
+    nitroApp.hooks.hook("error", async (error) =>
     {
-        logger.error(error);
+        logger.error(error.message);
     });
 
     nitroApp.hooks.hook("close", () =>

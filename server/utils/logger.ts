@@ -2,7 +2,7 @@ import winston from "winston";
 
 const { combine, timestamp, printf, colorize, errors, simple } = winston.format;
 
-const logger = winston.createLogger({
+export default winston.createLogger({
     level: process.env.LOG_LEVEL || "debug",
     levels: winston.config.syslog.levels,
     format: combine(
@@ -14,5 +14,3 @@ const logger = winston.createLogger({
     ),
     transports: [new winston.transports.Console()],
 });
-
-export default logger;

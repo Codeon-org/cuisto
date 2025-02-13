@@ -1,5 +1,6 @@
 import argon2 from "argon2";
 import { z } from "zod";
+import authMiddleware from "~/server/middleware/auth";
 
 const schema = z.object({
     username: validation.username,
@@ -9,6 +10,8 @@ const schema = z.object({
 
 export default defineEventHandler(async (event) =>
 {
+    await authMiddleware(event);
+
     const body = await readValidatedBody(event, schema.parse);
 
     const existingUser = await prisma.user.findFirst({
@@ -29,7 +32,7 @@ export default defineEventHandler(async (event) =>
     }
 
     const hashedPassword = await argon2.hash(body.password, {
-        type: argon2.argon2id, // Recommended variant
+        type: argon2.argon2id,
         memoryCost: 2 ** 16,
         timeCost: 3,
         parallelism: 1,
@@ -40,12 +43,11 @@ export default defineEventHandler(async (event) =>
             username: body.username,
             email: body.email,
             password: hashedPassword,
-            role: "Admin",
+            roles: ["User"]
         },
-        select: {
-            id: true
-        }
     });
 
-    return { ...user };
+    const token = generateToken({ id: user.id, roles: user.roles });
+
+    return { user, token };
 });

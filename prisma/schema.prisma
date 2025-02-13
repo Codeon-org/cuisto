@@ -11,75 +11,73 @@ datasource db {
 }
 
 enum Role {
-  Admin
-  Editor
-  Viewer
+  User
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  role      Role
+  id        String      @id @default(uuid()) @db.Uuid
   password  String
   username  String   @unique
   email     String   @unique
+  roles      Role[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
 }
 
-model Unit {
-  id               Int       @id @default(autoincrement())
-  name             String    @unique
-  symbol           String    @unique
-  conversionFactor Float?
-  baseUnitId       Int?
-  baseUnit         Unit?     @relation("BaseUnit", fields: [baseUnitId], references: [id])
-  variations       Unit[]    @relation("BaseUnit")
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @default(now()) @map("updated_at")
-  products         Product[]
+// model Unit {
+//   id               Int       @id @default(autoincrement())
+//   name             String    @unique
+//   symbol           String    @unique
+//   conversionFactor Float?
+//   baseUnitId       Int?
+//   baseUnit         Unit?     @relation("BaseUnit", fields: [baseUnitId], references: [id])
+//   variations       Unit[]    @relation("BaseUnit")
+//   createdAt        DateTime  @default(now()) @map("created_at")
+//   updatedAt        DateTime  @default(now()) @map("updated_at")
+//   products         Product[]
 
-  recipes RecipeProduct[]
-}
+//   recipes RecipeProduct[]
+// }
 
-model Product {
-  id        Int      @id @default(autoincrement())
-  name      String
-  unitId    Int
-  unit      Unit     @relation(fields: [unitId], references: [id], onDelete: Restrict)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+// model Product {
+//   id        Int      @id @default(autoincrement())
+//   name      String
+//   unitId    Int
+//   unit      Unit     @relation(fields: [unitId], references: [id], onDelete: Restrict)
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @default(now()) @map("updated_at")
 
-  recipes RecipeProduct[]
-}
+//   recipes RecipeProduct[]
+// }
 
-model Recipe {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @map("updated_at")
+// model Recipe {
+//   id          Int      @id @default(autoincrement())
+//   name        String
+//   description String?
+//   createdAt   DateTime @default(now()) @map("created_at")
+//   updatedAt   DateTime @default(now()) @map("updated_at")
 
-  // Many-to-Many relation through RecipeProduct
-  products RecipeProduct[]
-}
+//   // Many-to-Many relation through RecipeProduct
+//   products RecipeProduct[]
+// }
 
-model RecipeProduct {
-  id Int @id @default(autoincrement())
+// model RecipeProduct {
+//   id Int @id @default(autoincrement())
 
-  // Many-to-Many between Recipe and Product
-  recipeId Int
-  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+//   // Many-to-Many between Recipe and Product
+//   recipeId Int
+//   recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
-  productId Int
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   productId Int
+//   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  // Quantity and unit for the product in this specific recipe
-  quantity Float
-  unitId   Int
-  unit     Unit  @relation(fields: [unitId], references: [id], onDelete: Restrict)
+//   // Quantity and unit for the product in this specific recipe
+//   quantity Float
+//   unitId   Int
+//   unit     Unit  @relation(fields: [unitId], references: [id], onDelete: Restrict)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @map("updated_at")
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @default(now()) @map("updated_at")
 
-  @@unique([recipeId, productId])
-}
+//   @@unique([recipeId, productId])
+// }
