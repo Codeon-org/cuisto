@@ -1,8 +1,7 @@
 import { z } from "zod";
 
 const schema = z.object({
-    username: validation.username,
-    email: validation.email,
+    identifier: z.union([validation.username, validation.email]),
     password: validation.password,
 });
 
@@ -10,33 +9,31 @@ export default defineEventHandler(async (event) =>
 {
     const body = await readValidatedBody(event, schema.parse);
 
-    const existingUser = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
         where: {
             OR: [
-                { username: body.username },
-                { email: body.email },
+                { username: body.identifier },
+                { email: body.identifier }
             ]
         },
     });
 
-    if (existingUser)
+    if (!user)
     {
         throw createError({
             status: 400,
-            message: "Username or email already exists"
+            message: "No user found"
         });
     }
 
-    const hashedPassword = await hashPassword(body.password);
-
-    const user = await prisma.user.create({
-        data: {
-            username: body.username,
-            email: body.email,
-            password: hashedPassword,
-            roles: ["User"]
-        },
-    });
+    const passwordValid = await verifyPassword(user.password, body.password);
+    if (!passwordValid)
+    {
+        throw createError({
+            status: 400,
+            message: "Invalid password"
+        });
+    }
 
     const accessToken = generateAccessToken({ id: user.id, roles: user.roles });
     const refreshToken = generateRefreshToken({ id: user.id, roles: user.roles });

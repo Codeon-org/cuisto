@@ -6,21 +6,30 @@ export async function denyAccessUnlessGranted(event: H3Event): Promise<User>
     const token = getHeader(event, "Authorization")?.split(" ")[1];
     if (!token)
     {
-        throw createError({ statusCode: 401, statusMessage: "You must be authenticated to access this resource" });
+        throw createError({
+            status: 401,
+            message: "You must be authenticated to access this resource"
+        });
     }
 
-    const decoded = verifyToken(token);
-    if (!decoded)
+    try
     {
-        throw createError({ statusCode: 401, statusMessage: "Invalid JWT token" });
+        const decoded = verifyToken(token);
+
+        const user = await prisma.user.findUniqueOrThrow({
+            where: {
+
+                id: decoded.id
+            }
+        });
+
+        return user;
     }
-
-    const user = await prisma.user.findUniqueOrThrow({
-        where: {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            id: (decoded as any).id
-        }
-    });
-
-    return user;
+    catch
+    {
+        throw createError({
+            status: 401,
+            message: "Invalid JWT token"
+        });
+    }
 }

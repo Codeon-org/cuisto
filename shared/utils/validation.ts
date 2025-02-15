@@ -8,7 +8,7 @@ export default {
         .trim(),
 
     email: z.string()
-        .email()
+        .email("Email must be a valid email")
         .trim(),
 
     password: z.string()
