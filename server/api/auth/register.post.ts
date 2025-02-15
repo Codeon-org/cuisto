@@ -38,8 +38,8 @@ export default defineEventHandler(async (event) =>
         },
     });
 
-    const accessToken = generateAccessToken({ id: user.id, roles: user.roles });
-    const refreshToken = generateRefreshToken({ id: user.id, roles: user.roles });
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
 
     return {
         user: format(user, userSelect),
