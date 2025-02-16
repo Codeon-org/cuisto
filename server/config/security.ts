@@ -14,6 +14,6 @@ export const Roles: Record<Role, Role> = {
 // Only the first match will be used.
 export default {
     "/api/ping": [Roles.Guest],
-    "/api/auth/**": [Roles.Authenticated],
-    "/api/**": [Roles.User],
+    "/api/auth/**": [Roles.Guest],
+    "/api/**": [Roles.Authenticated],
 } as Record<string, Role[]>;

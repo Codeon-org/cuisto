@@ -24,7 +24,6 @@ export default defineEventHandler(async (event) =>
 
     // Retrieve the JWT token from cookies or headers
     const token = getHeader(event, "Authorization")?.replace("Bearer ", "");
-
     if (!token)
     {
         throw createError({
@@ -33,14 +32,9 @@ export default defineEventHandler(async (event) =>
         });
     }
 
-    let decoded;
-
-    try
-    {
-        // Verify and decode the JWT
-        decoded = verifyToken(token) as JwtPayload;
-    }
-    catch
+    // Verify and decode the JWT
+    const decoded = verifyToken(token);
+    if (!decoded)
     {
         throw createError({
             statusCode: 401,

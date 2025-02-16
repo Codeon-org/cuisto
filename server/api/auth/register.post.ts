@@ -38,6 +38,7 @@ export default defineEventHandler(async (event) =>
         },
     });
 
+    // TODO Bug ici
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 

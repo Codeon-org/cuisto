@@ -17,24 +17,13 @@ enum Role {
 }
 
 model User {
-  id        String      @id @default(uuid()) @db.Uuid
+  id        String   @id @default(uuid()) @db.Uuid
   password  String
   username  String   @unique
   email     String   @unique
-  roles      Role[]
+  roles     Role[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  refreshTokens RefreshToken[]
-}
-
-model RefreshToken {
-  id String @id @default(uuid()) @db.Uuid
-  token String
-  createdAt DateTime @default(now())
-  expiredAt DateTime
-  revoked Boolean @default(false)
-  userId    String @db.Uuid
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // model Unit {
