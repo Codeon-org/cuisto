@@ -10,6 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Can use the ///@serialize("groups_name") to serialize only some fields combined with the serializePrismaData utils.
+
 enum Role {
   User
 }

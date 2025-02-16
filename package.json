@@ -9,6 +9,7 @@
         "preview": "nuxt preview",
         "test": "vitest",
         "postinstall": "nuxt prepare",
+        "prepare": "nuxt prepare",
         "cleanup": "nuxi cleanup",
         "typecheck": "nuxi typecheck",
         "lint": "eslint .",
@@ -54,3 +55,4 @@
         ]
     }
 }
+

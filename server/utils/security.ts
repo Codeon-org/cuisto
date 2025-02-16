@@ -1,7 +1,6 @@
-import type { User } from "@prisma/client";
 import type { H3Event } from "h3";
 
-export async function denyAccessUnlessGranted(event: H3Event): Promise<User>
+export async function denyAccessUnlessGranted(event: H3Event)
 {
     const token = getHeader(event, "Authorization")?.split(" ")[1];
     if (!token)

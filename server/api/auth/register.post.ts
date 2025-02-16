@@ -42,10 +42,7 @@ export default defineEventHandler(async (event) =>
     const refreshToken = generateRefreshToken(user);
 
     return {
-        user: format(user, userSelect),
-        tokens: {
-            access_token: accessToken,
-            refresh_token: refreshToken
-        }
+        access_token: accessToken,
+        refresh_token: refreshToken
     };
 });

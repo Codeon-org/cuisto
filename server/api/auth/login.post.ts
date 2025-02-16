@@ -10,6 +10,11 @@ export default defineEventHandler(async (event) =>
     const body = await readValidatedBody(event, schema.parse);
 
     const user = await prisma.user.findFirst({
+        select: {
+            id: true,
+            password: true,
+            roles: true
+        },
         where: {
             OR: [
                 { username: body.identifier },
@@ -39,10 +44,7 @@ export default defineEventHandler(async (event) =>
     const refreshToken = generateRefreshToken(user);
 
     return {
-        user: format(user, userSelect),
-        tokens: {
-            access_token: accessToken,
-            refresh_token: refreshToken
-        }
+        access_token: accessToken,
+        refresh_token: refreshToken
     };
 });
