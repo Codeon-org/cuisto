@@ -26,6 +26,10 @@
                     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
                     "editor.formatOnSave": false
                 },
+                "[prisma]": {
+                    "editor.defaultFormatter": "Prisma.prisma",
+                    "editor.formatOnSave": true
+                },
                 "[css][scss][sass][less][json][jsonc][yaml][markdown]": {
                     "editor.formatOnSave": true,
                     "editor.defaultFormatter": "esbenp.prettier-vscode"
