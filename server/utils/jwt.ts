@@ -7,4 +7,4 @@ export const generateAccessToken = (payload: JwtPayload) => generateToken({ id: 
 export const generateRefreshToken = (payload: JwtPayload) => generateToken({ id: payload.id, roles: payload.roles }, "30d");
 
 export const generateToken = (payload: JwtPayload, expiresIn: StringValue | number = "1h") => jwt.sign(payload, JWT_SECRET, { expiresIn });
-export const verifyToken = (token: string) => jwt.verify(token, JWT_SECRET) as JwtPayload & jwt.JwtPayload;
+export const verifyToken = (token: string) => jwt.verify(token, JWT_SECRET) as JwtPayload;

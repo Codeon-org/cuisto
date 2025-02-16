@@ -26,6 +26,8 @@
         "@vueuse/nuxt": "12.5.0",
         "argon2": "^0.41.1",
         "jsonwebtoken": "^9.0.2",
+        "luxon": "^3.5.0",
+        "minimatch": "^10.0.1",
         "nuxt": "^3.15.4",
         "pinia": "^2.3.0",
         "pinia-plugin-persistedstate": "^4.2.0",
@@ -38,6 +40,7 @@
         "@nuxt/eslint": "^1.0.0",
         "@nuxt/test-utils": "^3.15.4",
         "@types/jsonwebtoken": "^9.0.8",
+        "@types/luxon": "^3.4.2",
         "@vue/test-utils": "^2.4.6",
         "eslint": "^9.19.0",
         "happy-dom": "^16.8.1",
@@ -55,4 +58,3 @@
         ]
     }
 }
-

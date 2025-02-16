@@ -26,8 +26,8 @@ export default defineEventHandler(async (event) =>
     if (!user)
     {
         throw createError({
-            status: 400,
-            message: "No user found"
+            statusCode: 400,
+            statusMessage: "No user found"
         });
     }
 
@@ -35,8 +35,8 @@ export default defineEventHandler(async (event) =>
     if (!passwordValid)
     {
         throw createError({
-            status: 400,
-            message: "Invalid password"
+            statusCode: 400,
+            statusMessage: "Invalid password"
         });
     }
 

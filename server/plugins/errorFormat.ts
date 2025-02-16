@@ -1,4 +1,5 @@
 import { H3Error } from "h3";
+import { DateTime } from "luxon";
 
 export default defineNitroPlugin((nitroApp) =>
 {
@@ -10,7 +11,7 @@ export default defineNitroPlugin((nitroApp) =>
             url: event.node.req.url,
             code: event.node.res.statusCode,
             message: (error instanceof H3Error ? error.statusMessage : error.message) || "An error occured",
-            timestamp: new Date().toISOString()
+            timestamp: DateTime.now().toUTC()
         }));
     });
 });

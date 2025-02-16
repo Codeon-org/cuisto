@@ -6,8 +6,8 @@ export async function denyAccessUnlessGranted(event: H3Event)
     if (!token)
     {
         throw createError({
-            status: 401,
-            message: "You must be authenticated to access this resource"
+            statusCode: 401,
+            statusMessage: "You must be authenticated to access this resource"
         });
     }
 
@@ -27,8 +27,8 @@ export async function denyAccessUnlessGranted(event: H3Event)
     catch
     {
         throw createError({
-            status: 401,
-            message: "Invalid JWT token"
+            statusCode: 401,
+            statusMessage: "Invalid JWT token"
         });
     }
 }

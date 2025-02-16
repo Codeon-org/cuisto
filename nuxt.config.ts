@@ -26,6 +26,14 @@ export default defineNuxtConfig({
         compatibilityVersion: 4
     },
     compatibilityDate: "2025-02-09",
+    nitro: {
+        storage: {
+            fs: {
+                driver: "fs-lite",
+                base: ".cache"
+            }
+        }
+    },
     eslint: {
         config: {
             stylistic: {
