@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) =>
     }
 
     // Verify and decode the JWT
-    const decoded = verifyToken(token);
+    const decoded = verifyJwtToken(token);
     if (!decoded)
     {
         throw createError({

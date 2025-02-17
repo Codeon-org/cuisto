@@ -6,20 +6,32 @@ import { nanoid } from "nanoid";
 type JwtPayload = {
     id: string;
     roles: Role[];
-    salt: string;
 };
 
 const JWT_SECRET = process.env.JWT_SECRET!;
+const JWT_ISSUER = process.env.JWT_ISSUER!;
+const JWT_AUDIENCE = process.env.JWT_AUDIENCE!;
 
-const generateToken = (payload: object, expiresIn: StringValue | number = "1h") => jwt.sign({ ...payload, salt: nanoid() }, JWT_SECRET, { expiresIn });
+export const generateAccessToken = (payload: JwtPayload, ttl: StringValue | number = "1h") =>
+{
+    return jwt.sign(
+        payload,
+        JWT_SECRET,
+        {
+            algorithm: "HS512",
+            expiresIn: ttl,
+            subject: "Authentication JWT token",
+            issuer: JWT_ISSUER,
+            audience: JWT_AUDIENCE,
+            jwtid: nanoid(),
+        });
+};
 
-export const generateAccessToken = (payload: Omit<JwtPayload, "salt">) => generateToken(payload);
-export const generateRefreshToken = (payload: Omit<JwtPayload, "salt">) => generateToken(payload, "30d");
-export const verifyToken = (token: string) =>
+export const verifyJwtToken = (token: string) =>
 {
     try
     {
-        return jwt.verify(token, JWT_SECRET) as JwtPayload;
+        return jwt.verify(token, JWT_SECRET) as jwt.JwtPayload & JwtPayload;
     }
     catch
     {

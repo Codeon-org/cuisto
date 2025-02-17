@@ -4,6 +4,6 @@ export default defineEventHandler(async (_event) =>
 {
     return {
         status: "OK",
-        timestamp: DateTime.now().toUTC()
+        timestamp: DateTime.now().toUTC(),
     };
 });
