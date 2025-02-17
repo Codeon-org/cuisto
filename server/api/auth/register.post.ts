@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) =>
         });
     }
 
-    const hashedPassword = await hashPassword(body.password);
+    const hashedPassword = await hash(body.password);
 
     const user = await prisma.user.create({
         data: {

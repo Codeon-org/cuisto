@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) =>
     const body = await readValidatedBody(event, schema.parse);
 
     // Verify and decode the JWT
-    const decoded = verifyToken(body.refresh_token);
+    const decoded = verifyJwtToken(body.refresh_token);
     if (!decoded)
     {
         throw createError({

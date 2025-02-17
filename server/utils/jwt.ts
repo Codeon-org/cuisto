@@ -27,6 +27,11 @@ export const generateAccessToken = (payload: JwtPayload, ttl: StringValue | numb
         });
 };
 
+export const generateRefreshToken = (userId: number) =>
+{
+    // TODO
+};
+
 export const verifyJwtToken = (token: string) =>
 {
     try

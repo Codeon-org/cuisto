@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) =>
         });
     }
 
-    const passwordValid = await verifyPassword(user.password, body.password);
+    const passwordValid = await verifyHash(user.password, body.password);
     if (!passwordValid)
     {
         throw createError({
@@ -41,8 +41,8 @@ export default defineEventHandler(async (event) =>
     }
 
     // TODO Bug ici
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+    const accessToken = generateAccessToken({ id: user.id, roles: user.roles });
+    const refreshToken = await generateRefreshToken(user.id);
 
     return {
         access_token: accessToken,
