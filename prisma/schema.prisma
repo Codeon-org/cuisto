@@ -24,7 +24,7 @@ model User {
   roles        Role[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-  RefreshToken RefreshToken[]
+  RefreshToken RefreshToken[] // TODO Changer en relation 1-1
 }
 
 model RefreshToken {
