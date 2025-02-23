@@ -40,12 +40,10 @@ export default defineEventHandler(async (event) =>
         });
     }
 
-    // TODO Bug ici
-    const accessToken = generateAccessToken({ id: user.id, roles: user.roles });
-    const refreshToken = await generateRefreshToken(user.id);
+    const tokens = await generateTokens(user);
 
     return {
-        access_token: accessToken,
-        refresh_token: refreshToken
+        access_token: tokens.accessToken,
+        refresh_token: tokens.refreshToken
     };
 });

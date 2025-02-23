@@ -32,7 +32,10 @@ export default defineEventHandler(async (event) =>
 
     // Verify and decode the JWT
     const decoded = verifyJwtToken(token);
-    if (!decoded)
+    const JWT_ISSUER = process.env.JWT_ISSUER!;
+    const JWT_AUDIENCE = process.env.JWT_AUDIENCE!;
+
+    if (!decoded || decoded.aud !== JWT_AUDIENCE || decoded.iss !== JWT_ISSUER)
     {
         throw createError({
             statusCode: 401,
@@ -45,10 +48,7 @@ export default defineEventHandler(async (event) =>
         return;
     }
 
-    // Extract the user's roles
     const userRoles = decoded.roles || [];
-
-    // Deny access if the user lacks at least one required role
     if (!userRoles.some(role => requiredRoles.includes(role)))
     {
         throw createError({

@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import argon2 from "argon2";
 
 export const hash = async (payload: Buffer | string) => await argon2.hash(payload, {
@@ -8,3 +9,5 @@ export const hash = async (payload: Buffer | string) => await argon2.hash(payloa
 });
 
 export const verifyHash = async (hashedPassword: string, payload: Buffer | string) => await argon2.verify(hashedPassword, payload);
+
+export const sha512 = (payload: Buffer | string) => crypto.createHash("sha3-512").update(payload).digest("hex");

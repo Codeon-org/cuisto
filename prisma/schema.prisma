@@ -28,18 +28,12 @@ model User {
 }
 
 model RefreshToken {
-  id         String   @id @default(uuid()) @db.Uuid
-  token      String   @unique
-  userId     String   @db.Uuid
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  device     String // Brave, Chrome, Firefox, Safari, or device name like "My Phone"
-  os         String // Windows, MacOS, Linux, Android, iOS
-  country    String
-  city       String
-  ipAddress  String // IPv4 or IPv6
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  lastUsedAt DateTime @default(now())
+  id        String   @id @default(uuid()) @db.Uuid
+  token     String   @unique
+  userId    String   @unique @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
 
 // model Unit {

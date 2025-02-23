@@ -1,12 +1,6 @@
 import jwt from "jsonwebtoken";
 import type { StringValue } from "ms";
-import type { Role } from "@prisma/client";
 import { nanoid } from "nanoid";
-
-type JwtPayload = {
-    id: string;
-    roles: Role[];
-};
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const JWT_ISSUER = process.env.JWT_ISSUER!;
@@ -15,7 +9,7 @@ const JWT_AUDIENCE = process.env.JWT_AUDIENCE!;
 export const generateAccessToken = (payload: JwtPayload, ttl: StringValue | number = "1h") =>
 {
     return jwt.sign(
-        payload,
+        { id: payload.id, roles: payload.roles } as JwtPayload,
         JWT_SECRET,
         {
             algorithm: "HS512",
@@ -27,9 +21,23 @@ export const generateAccessToken = (payload: JwtPayload, ttl: StringValue | numb
         });
 };
 
-export const generateRefreshToken = (userId: number) =>
+export const generateRefreshToken = async () =>
 {
-    // TODO
+    let existingToken;
+    let token;
+
+    do
+    {
+        token = nanoid(255);
+
+        existingToken = await prisma.refreshToken.findFirst({
+            where: {
+                token: sha512(token)
+            }
+        });
+    } while (existingToken !== null);
+
+    return token;
 };
 
 export const verifyJwtToken = (token: string) =>

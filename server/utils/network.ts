@@ -47,8 +47,16 @@ export const getUserAgent = (event: H3Event): UserAgent =>
     };
 };
 
-export const getIpLocation = async (ip: string): Promise<IpLocation> =>
+export const getIpLocation = async (ip?: string): Promise<IpLocation> =>
 {
+    if (!ip)
+    {
+        return {
+            country: undefined,
+            city: undefined
+        };
+    }
+
     try
     {
         const location = await $fetch<IpLocation>(`http://ip-api.com/json/${ip}?fields=country,city`);

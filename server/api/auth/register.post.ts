@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import { z } from "zod";
 
 const schema = z.object({
@@ -27,23 +28,19 @@ export default defineEventHandler(async (event) =>
         });
     }
 
-    const hashedPassword = await hash(body.password);
-
     const user = await prisma.user.create({
         data: {
             username: body.username,
             email: body.email,
-            password: hashedPassword,
-            roles: ["User"]
+            password: await hash(body.password),
+            roles: [Role.User]
         },
     });
 
-    // TODO Bug ici
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+    const tokens = await generateTokens(user);
 
     return {
-        access_token: accessToken,
-        refresh_token: refreshToken
+        access_token: tokens.accessToken,
+        refresh_token: tokens.refreshToken
     };
 });
