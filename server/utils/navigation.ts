@@ -1,6 +1,5 @@
 import { minimatch } from "minimatch";
-import type { Role } from "../config/security";
-import routeRules, { Roles } from "../config/security";
+import routeRules from "@/server/config/security";
 
 export const getRouteRequiredRoles = (path: string): Role[] =>
 {

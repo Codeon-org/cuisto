@@ -1,5 +1,3 @@
-import { Roles } from "../config/security";
-
 export default defineEventHandler(async (event) =>
 {
     const url = getRequestURL(event).pathname;

@@ -27,6 +27,9 @@ export default defineNuxtConfig({
     },
     compatibilityDate: "2025-02-09",
     nitro: {
+        imports: {
+            dirs: ["./server/config/**", "./server/types/**"]
+        },
         storage: {
             fs: {
                 driver: "fs-lite",
@@ -34,6 +37,7 @@ export default defineNuxtConfig({
             }
         }
     },
+    debug: process.env.NODE_ENV === "development",
     eslint: {
         config: {
             stylistic: {
