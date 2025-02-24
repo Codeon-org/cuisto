@@ -43,6 +43,11 @@ export default defineEventHandler(async (event) =>
         });
     }
 
+    event.context.user = {
+        id: decoded.id,
+        roles: decoded.roles
+    };
+
     if (requiredRoles.includes(Roles.Authenticated))
     {
         return;

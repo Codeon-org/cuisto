@@ -4,6 +4,7 @@ export const generateTokens = async (user: JwtPayload) =>
 {
     const accessToken = generateAccessToken(user);
     const refreshToken = await generateRefreshToken();
+    const refreshTokenExpiresAt = DateTime.now().toUTC().plus({ days: 90 }).toJSDate();
 
     const existingRefreshToken = await prisma.refreshToken.findUnique({
         where: {
@@ -19,7 +20,7 @@ export const generateTokens = async (user: JwtPayload) =>
             },
             data: {
                 token: sha512(refreshToken),
-                expiresAt: DateTime.now().toUTC().plus({ days: 90 }).toJSDate()
+                expiresAt: refreshTokenExpiresAt
             },
         });
     }
@@ -29,7 +30,7 @@ export const generateTokens = async (user: JwtPayload) =>
             data: {
                 token: sha512(refreshToken),
                 userId: user.id,
-                expiresAt: DateTime.now().toUTC().plus({ days: 90 }).toJSDate()
+                expiresAt: refreshTokenExpiresAt
             },
         });
     }
