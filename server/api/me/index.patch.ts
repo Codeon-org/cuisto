@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 const schema = z.object({
-    username: validation.username.optional(),
-    email: validation.email.optional(),
-    password: validation.password.optional(),
+    username: validation.user.username.optional(),
+    email: validation.user.email.optional(),
+    password: validation.user.password.optional(),
 });
 
 export default defineEventHandler(async (event) =>
@@ -23,11 +23,14 @@ export default defineEventHandler(async (event) =>
                 OR: [
                     { username: body.username },
                     { email: body.email },
+                ],
+                NOT: [
+                    { id: userId }
                 ]
             },
         });
 
-        if (existingUser && existingUser.id !== userId)
+        if (existingUser)
         {
             throw createError({
                 statusCode: 400,

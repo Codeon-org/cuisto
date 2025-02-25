@@ -2,9 +2,9 @@ import { Role } from "@prisma/client";
 import { z } from "zod";
 
 const schema = z.object({
-    username: validation.username,
-    email: validation.email,
-    password: validation.password,
+    username: validation.user.username,
+    email: validation.user.email,
+    password: validation.user.password,
 });
 
 export default defineEventHandler(async (event) =>

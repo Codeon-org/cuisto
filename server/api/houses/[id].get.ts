@@ -15,8 +15,14 @@ export default defineEventHandler(async (event) =>
         where: {
             AND: [
                 { id: houseId },
-                { users: { some: { id: userId } } }
-            ]
+                {
+                    OR: [
+                        { ownerId: userId },
+                        { users: { some: { id: userId } } }
+                    ]
+                }
+            ],
+
         }
     });
 

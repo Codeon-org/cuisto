@@ -25,7 +25,10 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   refreshToken RefreshToken?
-  houses       House[]       @relation()
+
+  ownedHouses House[] @relation("HouseOwner")
+
+  houses House[] @relation("HouseMember")
 }
 
 model House {
@@ -33,7 +36,11 @@ model House {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  users     User[]   @relation()
+
+  ownerId String @db.Uuid
+  owner   User   @relation("HouseOwner", fields: [ownerId], references: [id])
+
+  users User[] @relation("HouseMember")
 }
 
 model RefreshToken {

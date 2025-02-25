@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 const schema = z.object({
-    identifier: z.union([validation.username, validation.email]),
-    password: validation.password,
+    identifier: z.union([validation.user.username, validation.user.email]),
+    password: validation.user.password,
 });
 
 export default defineEventHandler(async (event) =>

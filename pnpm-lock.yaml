@@ -29,6 +29,9 @@ importers:
       argon2:
         specifier: ^0.41.1
         version: 0.41.1
+      defu:
+        specifier: ^6.1.4
+        version: 6.1.4
       ip-address:
         specifier: ^10.0.1
         version: 10.0.1
