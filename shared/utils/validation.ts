@@ -1,21 +1,21 @@
 import { z } from "zod";
 
 export default {
-    common: {},
+    common: {
+        id: z.string().uuid("ID must be a valid UUID")
+    },
     pagination: {
         page: z.number()
             .int()
-            .min(1, "Page must be at least 1")
-            .optional(),
+            .min(1, "Page must be at least 1"),
 
         itemsPerPage: z.number()
             .int()
             .min(1, "Limit must be at least 1")
-            .max(100, "Limit must be at most 100")
-            .optional(),
+            .max(100, "Limit must be at most 100"),
 
-        sort: z.string().optional(),
-        order: z.enum(["asc", "desc"]).optional()
+        sort: z.string(),
+        order: z.enum(["asc", "desc"])
     },
     user: {
         username: z.string()

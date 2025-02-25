@@ -1,9 +1,15 @@
+import { z } from "zod";
+
+const urlSchema = z.object({
+    id: validation.common.id
+});
+
 export default defineEventHandler(async (event) =>
 {
     const { id: userId } = event.context.user;
-    const houseId = getRouterParam(event, "id");
+    const body = await getValidatedRouterParams(event, urlSchema.parse);
 
-    if (!houseId)
+    if (!body.id)
     {
         throw createError({
             statusCode: 400,
@@ -14,7 +20,7 @@ export default defineEventHandler(async (event) =>
     const house = await prisma.house.findFirst({
         where: {
             AND: [
-                { id: houseId },
+                { id: body.id },
                 {
                     OR: [
                         { ownerId: userId },
@@ -30,7 +36,7 @@ export default defineEventHandler(async (event) =>
     {
         throw createError({
             statusCode: 404,
-            statusMessage: `No house found with id '${houseId}'`
+            statusMessage: `No house found with id '${body.id}'`
         });
     }
 
