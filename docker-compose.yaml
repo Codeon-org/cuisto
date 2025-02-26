@@ -29,13 +29,14 @@ services:
         depends_on:
             - database
 
-    mailer:
-        container_name: cuisto-mailer
-        image: maildev/maildev
+    smtp4dev:
+        image: rnwood/smtp4dev:v3
         restart: always
+        volumes:
+            - smtp4dev-data:/smtp4dev
         environment:
-            - MAILDEV_WEB_PORT=1080
-            - MAILDEV_SMTP_PORT=1025
+            - ServerOptions__Urls=http://*:8080
 
 volumes:
     cuisto_db_data:
+    smtp4dev-data:
