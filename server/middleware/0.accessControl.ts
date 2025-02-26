@@ -32,10 +32,8 @@ export default defineEventHandler(async (event) =>
 
     // Verify and decode the JWT
     const decoded = verifyJwtToken(token);
-    const JWT_ISSUER = process.env.JWT_ISSUER!;
-    const JWT_AUDIENCE = process.env.JWT_AUDIENCE!;
 
-    if (!decoded || decoded.aud !== JWT_AUDIENCE || decoded.iss !== JWT_ISSUER)
+    if (!decoded)
     {
         throw createError({
             statusCode: 401,

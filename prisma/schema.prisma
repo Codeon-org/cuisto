@@ -16,6 +16,15 @@ enum Role {
   User
 }
 
+model RefreshToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  token     String   @unique
+  userId    String   @unique @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
 model User {
   id           String        @id @default(uuid()) @db.Uuid
   password     String
@@ -25,31 +34,30 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   refreshToken RefreshToken?
-
-  ownedHouses House[] @relation("HouseOwner")
-
-  houses House[] @relation("HouseMember")
+  ownedHouses  House[]       @relation("HouseOwner")
+  houses       House[]       @relation("HouseMember")
 }
 
 model House {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  ownerId String @db.Uuid
-  owner   User   @relation("HouseOwner", fields: [ownerId], references: [id])
-
-  users User[] @relation("HouseMember")
+  id              String            @id @default(uuid()) @db.Uuid
+  name            String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  ownerId         String            @db.Uuid
+  owner           User              @relation("HouseOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  users           User[]            @relation("HouseMember")
+  HouseInvitation HouseInvitation[]
 }
 
-model RefreshToken {
+model HouseInvitation {
   id        String   @id @default(uuid()) @db.Uuid
+  email     String
+  houseId   String   @db.Uuid
+  house     House    @relation(fields: [houseId], references: [id], onDelete: Cascade)
   token     String   @unique
-  userId    String   @unique @db.Uuid
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   createdAt DateTime @default(now())
+  isUsed    Boolean  @default(false)
 }
 
 // model Unit {

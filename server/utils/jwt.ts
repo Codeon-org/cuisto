@@ -3,8 +3,6 @@ import type { StringValue } from "ms";
 import { nanoid } from "nanoid";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
-const JWT_ISSUER = process.env.JWT_ISSUER!;
-const JWT_AUDIENCE = process.env.JWT_AUDIENCE!;
 
 export const generateAccessToken = (payload: JwtPayload, ttl: StringValue | number = "1h") =>
 {
@@ -15,9 +13,6 @@ export const generateAccessToken = (payload: JwtPayload, ttl: StringValue | numb
             algorithm: "HS512",
             expiresIn: ttl,
             subject: "Authentication JWT token",
-            issuer: JWT_ISSUER,
-            audience: JWT_AUDIENCE,
-            jwtid: nanoid(),
         });
 };
 

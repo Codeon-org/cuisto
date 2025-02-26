@@ -29,5 +29,10 @@ services:
         depends_on:
             - database
 
+    mailer:
+        image: maildev/maildev
+        container_name: cuisto-mailer
+        command: bin/maildev --web 1080 --smtp 1025 --hide-extensions STARTTLS
+
 volumes:
     cuisto_db_data:
