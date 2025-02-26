@@ -30,9 +30,12 @@ services:
             - database
 
     mailer:
-        image: maildev/maildev
         container_name: cuisto-mailer
-        command: bin/maildev --web 1080 --smtp 1025 --hide-extensions STARTTLS
+        image: maildev/maildev
+        restart: always
+        environment:
+            - MAILDEV_WEB_PORT=1080
+            - MAILDEV_SMTP_PORT=1025
 
 volumes:
     cuisto_db_data:
