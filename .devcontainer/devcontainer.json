@@ -1,6 +1,6 @@
 {
     "name": "Cuisto",
-    "forwardPorts": [3000, 5555, 8080],
+    "forwardPorts": ["app:3000", "app:5555", "maildev:1080"],
     "dockerComposeFile": ["../docker-compose.yaml"],
     "service": "app",
     "workspaceFolder": "/app",

@@ -29,14 +29,12 @@ services:
         depends_on:
             - database
 
-    smtp4dev:
-        image: rnwood/smtp4dev:v3
-        restart: always
-        volumes:
-            - smtp4dev-data:/smtp4dev
+    maildev:
+        image: maildev/maildev
+        restart: unless-stopped
         environment:
-            - ServerOptions__Urls=http://*:8080
+            - MAILDEV_WEB_PORT=1080
+            - MAILDEV_SMTP_PORT=1025
 
 volumes:
     cuisto_db_data:
-    smtp4dev-data:
