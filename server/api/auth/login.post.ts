@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-const schema = z.object({
+const bodySchema = z.object({
     identifier: z.union([validation.user.username, validation.user.email]),
     password: validation.user.password,
 });
 
 export default defineEventHandler(async (event) =>
 {
-    const body = await readValidatedBody(event, schema.parse);
+    const body = await readValidatedBody(event, bodySchema.parse);
 
     const user = await prisma.user.findFirst({
         select: {

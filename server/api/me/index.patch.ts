@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const schema = z.object({
+const bodySchema = z.object({
     username: validation.user.username.optional(),
     email: validation.user.email.optional(),
     password: validation.user.password.optional(),
@@ -9,7 +9,7 @@ const schema = z.object({
 export default defineEventHandler(async (event) =>
 {
     const { id: userId } = event.context.user;
-    const body = await readValidatedBody(event, schema.parse);
+    const body = await readValidatedBody(event, bodySchema.parse);
 
     if (body.password)
     {

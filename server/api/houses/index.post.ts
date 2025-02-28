@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-const schema = z.object({
+const bodySchema = z.object({
     name: validation.house.name,
 });
 
 export default defineEventHandler(async (event) =>
 {
     const { id: userId } = event.context.user;
-    const body = await readValidatedBody(event, schema.parse);
+    const body = await readValidatedBody(event, bodySchema.parse);
 
     const house = await prisma.house.create({
         data: {

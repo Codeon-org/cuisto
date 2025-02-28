@@ -1,7 +1,7 @@
 import { Role } from "@prisma/client";
 import { z } from "zod";
 
-const schema = z.object({
+const bodySchema = z.object({
     username: validation.user.username,
     email: validation.user.email,
     password: validation.user.password,
@@ -9,7 +9,7 @@ const schema = z.object({
 
 export default defineEventHandler(async (event) =>
 {
-    const body = await readValidatedBody(event, schema.parse);
+    const body = await readValidatedBody(event, bodySchema.parse);
 
     const existingUser = await prisma.user.findFirst({
         where: {

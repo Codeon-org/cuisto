@@ -1,13 +1,13 @@
 import { DateTime } from "luxon";
 import { z } from "zod";
 
-const schema = z.object({
+const bodySchema = z.object({
     refresh_token: z.string()
 });
 
 export default defineEventHandler(async (event) =>
 {
-    const body = await readValidatedBody(event, schema.parse);
+    const body = await readValidatedBody(event, bodySchema.parse);
 
     const refreshToken = await prisma.refreshToken.findUnique({
         where: {
