@@ -112,13 +112,11 @@ export default defineEventHandler(async (event) =>
         }
     });
 
-    const invitationLink = `${process.env.FRONTEND_ROOT}/houses/${houseId}/join?token=${invite.token}`;
-
     // Send an email to the user
     await sendMail({
         to: user.email,
         subject: `You have been invited to the house: ${house.name}`,
-        html: `You have been invited to the house: ${house.name}. Click the following link to join: <a href="${invitationLink}" target="_blank">${invitationLink}</a>`
+        text: `You have been invited to the house: ${house.name}. Use the following token to accept the invitation:\n\n${invite.token}\n\nIt will expire in 7 days.`
     });
 
     // Return a success response with status code "No Content (204)"
