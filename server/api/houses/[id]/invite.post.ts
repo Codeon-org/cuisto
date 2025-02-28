@@ -85,9 +85,10 @@ export default defineEventHandler(async (event) =>
         where: {
             houseId: houseId,
             receiverId: user.id,
+            isUsed: false,
             expiresAt: {
                 gte: DateTime.now().toUTC().toJSDate()
-            }
+            },
         }
     });
 
@@ -100,12 +101,13 @@ export default defineEventHandler(async (event) =>
     }
 
     // Create an invite for the user with an expiration date
+    const token = await generateNanoId("houseInvitation", "token", { length: 255 });
     const invite = await prisma.houseInvitation.create({
         data: {
             houseId: houseId,
-            receiverId: user.email,
+            receiverId: user.id,
             authorId: userId,
-            token: await generateNanoId("houseInvitation", "token", { length: 255 }),
+            token,
             expiresAt: DateTime.now().toUTC().plus({ days: 7 }).toJSDate()
         }
     });
