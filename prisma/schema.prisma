@@ -48,7 +48,7 @@ model House {
   ownerId         String            @db.Uuid
   owner           User              @relation("HouseOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   users           User[]            @relation("HouseMember")
-  HouseInvitation HouseInvitation[]
+  houseInvitation HouseInvitation[]
 }
 
 model HouseInvitation {
