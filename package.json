@@ -11,7 +11,7 @@
         "postinstall": "nuxt prepare",
         "prepare": "nuxt prepare",
         "cleanup": "nuxi cleanup",
-        "typecheck": "nuxi typecheck",
+        "typecheck": "nuxi typecheck app",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "prisma:migrate": "prisma migrate dev && prisma migrate deploy && prisma generate",

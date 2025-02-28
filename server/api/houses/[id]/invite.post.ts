@@ -27,6 +27,7 @@ export default defineEventHandler(async (event) =>
         },
         select: {
             ownerId: true,
+            name: true,
             users: {
                 select: {
                     id: true
@@ -79,21 +80,43 @@ export default defineEventHandler(async (event) =>
         });
     }
 
+    // Check if there is already an invitation for the user that is not expired
+    const existingInvitation = await prisma.houseInvitation.findFirst({
+        where: {
+            houseId: houseId,
+            receiverId: user.id,
+            expiresAt: {
+                gte: DateTime.now().toUTC().toJSDate()
+            }
+        }
+    });
+
+    if (existingInvitation)
+    {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "An invitation has already been sent to this user"
+        });
+    }
+
     // Create an invite for the user with an expiration date
     const invite = await prisma.houseInvitation.create({
         data: {
             houseId: houseId,
-            email: user.email,
-            token: generateToken(),
+            receiverId: user.email,
+            authorId: userId,
+            token: await generateNanoId("houseInvitation", "token", { length: 255 }),
             expiresAt: DateTime.now().toUTC().plus({ days: 7 }).toJSDate()
         }
     });
 
+    const invitationLink = `${process.env.FRONTEND_ROOT}/houses/${houseId}/join?token=${invite.token}`;
+
     // Send an email to the user
-    await sendEmail({
+    await sendMail({
         to: user.email,
-        subject: "You have been invited to a house",
-        text: `You have been invited to a house. Click the following link to join: ${invite.token}`
+        subject: `You have been invited to the house: ${house.name}`,
+        html: `You have been invited to the house: ${house.name}. Click the following link to join: <a href="${invitationLink}" target="_blank">${invitationLink}</a>`
     });
 
     // Return a success response with status code "No Content (204)"
