@@ -3,7 +3,7 @@ import winston from "winston";
 const { combine, timestamp, printf, colorize, errors, simple } = winston.format;
 
 export default winston.createLogger({
-    level: process.env.LOG_LEVEL || "debug",
+    level: process.env.LOG_LEVEL,
     levels: winston.config.syslog.levels,
     format: combine(
         colorize({ all: true, colors: { debug: "gray", info: "blue", notice: "green", warning: "yellow", error: "red", crit: "red", alert: "bold red", emerg: "bold red redBG" } }),

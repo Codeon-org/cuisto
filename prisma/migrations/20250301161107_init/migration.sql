@@ -5,6 +5,7 @@ CREATE TYPE "Role" AS ENUM ('User');
 CREATE TABLE "RefreshToken" (
     "id" UUID NOT NULL,
     "token" TEXT NOT NULL,
+    "deviceToken" TEXT NOT NULL,
     "userId" UUID NOT NULL,
     "expiresAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -60,6 +61,9 @@ CREATE TABLE "_HouseMember" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RefreshToken_token_key" ON "RefreshToken"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RefreshToken_deviceToken_key" ON "RefreshToken"("deviceToken");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RefreshToken_userId_key" ON "RefreshToken"("userId");

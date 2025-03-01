@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 export const generateNanoId = (model: keyof PrismaClient, field: string, options: { length: number }) => generate(model, field, () => nanoid(options.length));
 export const generateUuid = (model: keyof PrismaClient, field: string) => generate(model, field, () => uuidv4());
 
-export const generate = async <T>(model: keyof PrismaClient, field: string, generator: (iteration: number) => T) =>
+export const generate = async <T>(model: keyof PrismaClient, field: string, generator: (iteration: number) => T, preTransformer?: (rawValue: T) => T, postTransformer?: (rawValue: T) => T) =>
 {
     if (!(model in prisma))
     {
@@ -18,7 +18,9 @@ export const generate = async <T>(model: keyof PrismaClient, field: string, gene
 
     do
     {
-        value = generator(tries);
+        const rawValue = generator(tries);
+
+        value = preTransformer ? preTransformer(rawValue) : rawValue;
 
         try
         {
@@ -33,5 +35,5 @@ export const generate = async <T>(model: keyof PrismaClient, field: string, gene
         tries++;
     } while (alreadyExists);
 
-    return value;
+    return postTransformer ? postTransformer(value) : value;
 };
