@@ -4,10 +4,9 @@ import { Address4, Address6 } from "ip-address";
 
 export const getIpAddress = (event: H3Event): IpAddress =>
 {
-    const rawIp = getHeader(event, "x-forwarded-for") // Proxy IP
-        || getHeader(event, "cf-connecting-ip") // Cloudflare IP
+    const rawIp = getHeader(event, "cf-connecting-ip") // Cloudflare IP
         || getHeader(event, "x-real-ip") // Nginx proxy IP
-        || event.node.req.socket.remoteAddress // Default IP
+        || getRequestIP(event, { xForwardedFor: true }) // Default IP
         || "unknown";
 
     if (Address4.isValid(rawIp))

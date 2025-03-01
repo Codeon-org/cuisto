@@ -66,9 +66,6 @@ CREATE UNIQUE INDEX "RefreshToken_token_key" ON "RefreshToken"("token");
 CREATE UNIQUE INDEX "RefreshToken_deviceToken_key" ON "RefreshToken"("deviceToken");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "RefreshToken_userId_key" ON "RefreshToken"("userId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex

@@ -5,10 +5,20 @@ export type UserContext = {
     roles: Role[];
 };
 
+export type DeviceContext = {
+    token: string;
+};
+
+export type JwtContext = {
+    accessToken: string;
+};
+
 declare module "h3"
 {
     interface H3EventContext
     {
         user: UserContext;
+        device: DeviceContext;
+        jwt: JwtContext;
     }
 }

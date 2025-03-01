@@ -30,8 +30,12 @@ export default defineEventHandler(async (event) =>
         });
     }
 
+    event.context.jwt = {
+        accessToken: token,
+    };
+
     // Verify and decode the JWT
-    const decoded = verifyJwtToken(token);
+    const decoded = readVerifiedJwtToken(token);
 
     if (!decoded)
     {
@@ -44,6 +48,10 @@ export default defineEventHandler(async (event) =>
     event.context.user = {
         id: decoded.id,
         roles: decoded.roles
+    };
+
+    event.context.device = {
+        token: decoded.deviceToken
     };
 
     if (requiredRoles.includes(Roles.Authenticated))

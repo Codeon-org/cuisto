@@ -2,8 +2,8 @@ import type { PrismaClient } from "@prisma/client";
 import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
 
-export const generateNanoId = (model: keyof PrismaClient, field: string, options: { length: number }) => generate(model, field, () => nanoid(options.length));
-export const generateUuid = (model: keyof PrismaClient, field: string) => generate(model, field, () => uuidv4());
+export const generateNanoId = (model: keyof PrismaClient, field: string, options: { length: number }, preTransformer?: (rawValue: string) => string, postTransformer?: (rawValue: string) => string) => generate(model, field, () => nanoid(options.length), preTransformer, postTransformer);
+export const generateUuid = (model: keyof PrismaClient, field: string, preTransformer?: (rawValue: string) => string, postTransformer?: (rawValue: string) => string) => generate(model, field, () => uuidv4(), preTransformer, postTransformer);
 
 export const generate = async <T>(model: keyof PrismaClient, field: string, generator: (iteration: number) => T, preTransformer?: (rawValue: T) => T, postTransformer?: (rawValue: T) => T) =>
 {
@@ -15,11 +15,11 @@ export const generate = async <T>(model: keyof PrismaClient, field: string, gene
     let tries = 0;
     let alreadyExists;
     let value: T;
+    let rawValue: T;
 
     do
     {
-        const rawValue = generator(tries);
-
+        rawValue = generator(tries);
         value = preTransformer ? preTransformer(rawValue) : rawValue;
 
         try
@@ -35,5 +35,5 @@ export const generate = async <T>(model: keyof PrismaClient, field: string, gene
         tries++;
     } while (alreadyExists);
 
-    return postTransformer ? postTransformer(value) : value;
+    return postTransformer ? postTransformer(rawValue) : rawValue;
 };

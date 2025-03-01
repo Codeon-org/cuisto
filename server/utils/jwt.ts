@@ -1,6 +1,6 @@
+import type { VerifyOptions } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import type { StringValue } from "ms";
-import { nanoid } from "nanoid";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -18,28 +18,14 @@ export const generateAccessToken = (payload: JwtPayload, ttl: StringValue | numb
 
 export const generateRefreshToken = async () =>
 {
-    let existingToken;
-    let token;
-
-    do
-    {
-        token = nanoid(255);
-
-        existingToken = await prisma.refreshToken.findFirst({
-            where: {
-                token: sha512(token)
-            }
-        });
-    } while (existingToken !== null);
-
-    return token;
+    return await generateNanoId("refreshToken", "token", { length: 255 }, rawValue => sha512(rawValue));
 };
 
-export const verifyJwtToken = (token: string) =>
+export const readVerifiedJwtToken = (token: string, options?: VerifyOptions) =>
 {
     try
     {
-        return jwt.verify(token, JWT_SECRET) as jwt.JwtPayload & JwtPayload;
+        return jwt.verify(token, JWT_SECRET, options) as jwt.JwtPayload & JwtPayload;
     }
     catch
     {

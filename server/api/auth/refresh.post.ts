@@ -7,20 +7,22 @@ const bodySchema = z.object({
 
 export default defineEventHandler(async (event) =>
 {
+    // Get data from the context
+    const { id: userId, roles: userRoles } = event.context.user;
+    const { token: deviceToken } = event.context.device;
+
+    // Read the request body
     const body = await readValidatedBody(event, bodySchema.parse);
 
     const refreshToken = await prisma.refreshToken.findUnique({
         where: {
+            deviceToken: deviceToken,
             token: sha512(body.refresh_token),
+            userId: userId
         },
         select: {
-            expiresAt: true,
-            user: {
-                select: {
-                    id: true,
-                    roles: true,
-                }
-            }
+            id: true,
+            expiresAt: true
         }
     });
 
@@ -32,10 +34,23 @@ export default defineEventHandler(async (event) =>
         });
     }
 
-    const tokens = await generateTokens(refreshToken.user);
+    // Generate access and refresh tokens
+    const accessToken = generateAccessToken({ id: userId, roles: userRoles, deviceToken });
+    const newRefreshToken = await generateRefreshToken();
+    const refreshTokenExpiresAt = DateTime.now().toUTC().plus({ days: 90 }).toJSDate();
+
+    await prisma.refreshToken.update({
+        where: {
+            id: refreshToken.id
+        },
+        data: {
+            token: sha512(newRefreshToken),
+            expiresAt: refreshTokenExpiresAt,
+        },
+    });
 
     return {
-        access_token: tokens.accessToken,
-        refresh_token: tokens.refreshToken
+        access_token: accessToken,
+        refresh_token: newRefreshToken
     };
 });

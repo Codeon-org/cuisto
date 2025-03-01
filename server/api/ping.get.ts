@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 
-export default defineEventHandler(async () =>
+export default defineEventHandler(() =>
 {
     return {
         status: "OK",
