@@ -7,16 +7,16 @@ export default defineNuxtConfig({
         "@pinia/nuxt",
         "@nuxt/test-utils/module",
         "pinia-plugin-persistedstate/nuxt",
-        "@prisma/nuxt",
-        "@nuxt/ui"
+        "@nuxt/ui",
+        "~/modules/build-copy"
     ],
     ssr: false,
     devtools: {
         enabled: true,
     },
-    css: [
-        "~/assets/css/main.css"
-    ],
+    // css: [
+    //     "~/assets/css/main.css"
+    // ],
     router: {
         options: {
             scrollBehaviorType: "smooth"
@@ -28,16 +28,27 @@ export default defineNuxtConfig({
     compatibilityDate: "2025-02-09",
     nitro: {
         imports: {
-            dirs: ["./server/config/**", "./server/types/**"]
+            dirs: [
+                "./server/config/**",
+                "./server/types/**",
+            ]
         },
         storage: {
             fs: {
                 driver: "fs-lite",
                 base: ".cache"
+            },
+            email: {
+                driver: "fs-lite",
+                base: "email"
             }
         }
     },
     debug: process.env.NODE_ENV === "development",
+    copyFiles: {
+        sources: ["./email"],
+        root: "dir"
+    },
     eslint: {
         config: {
             stylistic: {

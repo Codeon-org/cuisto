@@ -19,7 +19,8 @@
                 "Vue.volar",
                 "bradlc.vscode-tailwindcss",
                 "Nuxtr.nuxtr-vscode",
-                "Prisma.prisma"
+                "Prisma.prisma",
+                "mjmlio.vscode-mjml"
             ],
             "settings": {
                 "[javascript][typescript][vue]": {

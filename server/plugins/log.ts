@@ -11,7 +11,8 @@ export default defineNitroPlugin((nitroApp) =>
 
     nitroApp.hooks.hook("error", async (error, { event }) =>
     {
-        logger.error(`(${event?.node.res.statusCode || 500}) ${(error instanceof H3Error ? error.statusMessage : error.message) || "An error occured"}`);
+        // logger.error(`(${event?.node.res.statusCode || 500}) ${(error instanceof H3Error ? error.statusMessage : error.message) || "An error occured"}`);
+        logger.error(`(${event?.node.res.statusCode || 500}) ${(error instanceof H3Error ? error.statusMessage : error.message) || error}`);
     });
 
     nitroApp.hooks.hook("close", () =>
