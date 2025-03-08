@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs"; // Use fs-extra for better file handling
 import { defineNuxtModule } from "@nuxt/kit";
 import type { NitroOptions } from "nitropack"; // Import NitroOptions
+import { consola } from "consola";
 
 // Define module options
 export interface ModuleOptions
@@ -42,7 +43,7 @@ export default defineNuxtModule<ModuleOptions>({
 
                 if (!fs.existsSync(sourcePath))
                 {
-                    console.warn(`⚠️ Source "${sourcePath}" does not exist.`);
+                    consola.warn(`Source \`${sourcePath}\` does not exist.`);
                     continue;
                 }
 
@@ -51,12 +52,12 @@ export default defineNuxtModule<ModuleOptions>({
                 if (stats.isDirectory())
                 {
                     fs.cpSync(sourcePath, destinationPath, { recursive: true });
-                    console.log(`📂 Copied folder: ${sourcePath} → ${destinationPath}`);
+                    consola.info(`Copied folder \`${sourcePath}\` to \`${destinationPath}\``);
                 }
                 else if (stats.isFile())
                 {
                     fs.copyFileSync(sourcePath, destinationPath);
-                    console.log(`📄 Copied file: ${sourcePath} → ${destinationPath}`);
+                    consola.info(`Copied file \`${sourcePath}\` to \`${destinationPath}\``);
                 }
             }
         });
