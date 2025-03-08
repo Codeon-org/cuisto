@@ -11,19 +11,22 @@ export default defineNuxtConfig({
         "~/modules/build-copy"
     ],
     ssr: false,
+    imports: {
+        autoImport: true
+    },
     devtools: {
         enabled: true,
     },
-    // css: [
-    //     "~/assets/css/main.css"
-    // ],
+    css: [
+        "~/assets/css/main.css"
+    ],
     router: {
         options: {
             scrollBehaviorType: "smooth"
         }
     },
     future: {
-        compatibilityVersion: 4
+        compatibilityVersion: 4,
     },
     compatibilityDate: "2025-02-09",
     nitro: {
