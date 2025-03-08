@@ -8,7 +8,7 @@ export default defineNuxtConfig({
         "@nuxt/test-utils/module",
         "pinia-plugin-persistedstate/nuxt",
         "@nuxt/ui",
-        "~/modules/build-copy"
+        "./modules/build-copy"
     ],
     ssr: false,
     imports: {
