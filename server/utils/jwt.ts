@@ -7,7 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 export const generateAccessToken = (payload: JwtPayload, ttl: StringValue | number = "1h") =>
 {
     return jwt.sign(
-        { id: payload.id, roles: payload.roles, deviceToken: payload.deviceToken } as JwtPayload,
+        { id: payload.id, roles: payload.roles } as JwtPayload,
         JWT_SECRET,
         {
             algorithm: "HS512",

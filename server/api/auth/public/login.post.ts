@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) =>
         select: {
             id: true,
             password: true,
-            roles: true
+            roles: true,
+            email: true
         },
         where: {
             OR: [
@@ -45,20 +46,52 @@ export default defineEventHandler(async (event) =>
     }
 
     // Generate access and refresh tokens
-    const newDeviceToken = await generateNanoId("refreshToken", "deviceToken", { length: 255 });
+    const accessToken = generateAccessToken({ id: user.id, roles: user.roles });
 
-    const accessToken = generateAccessToken({ id: user.id, roles: user.roles, deviceToken: newDeviceToken });
     const refreshToken = await generateRefreshToken();
+    const fingerprint = await getFingerprint(event);
     const refreshTokenExpiresAt = DateTime.now().toUTC().plus({ days: 90 }).toJSDate();
 
-    await prisma.refreshToken.create({
-        data: {
-            token: sha512(refreshToken),
-            userId: user.id,
-            expiresAt: refreshTokenExpiresAt,
-            deviceToken: newDeviceToken
-        },
+    const existingRefreshToken = await prisma.refreshToken.findFirst({
+        where: {
+            AND: [
+                { userId: user.id },
+                {deviceFingerprint: fingerprint}
+            ]
+        }
     });
+
+    if(existingRefreshToken) {
+        await prisma.refreshToken.update({
+            data: {
+                expiresAt: refreshTokenExpiresAt,
+                token: sha512(refreshToken)
+            },
+            where: {
+                id: existingRefreshToken.id
+            }
+        });
+    } else {
+        await prisma.refreshToken.create({
+            data: {
+                token: sha512(refreshToken),
+                userId: user.id,
+                expiresAt: refreshTokenExpiresAt,
+                deviceFingerprint: fingerprint
+            },
+        });
+
+        await sendMjmlMail({
+            params: {
+                deviceName: getUserAgent(event).browser ?? "Unknown",
+                ip: getIpAddress(event).v4 ?? getIpAddress(event).v6 ?? "Unknown",
+                time: DateTime.now().toUTC().toLocaleString(DateTime.DATETIME_FULL,)
+            },
+            to: user.email,
+            template: "NewDeviceConnection",
+            subject: "New device detected"
+        });
+    }
 
     return {
         access_token: accessToken,

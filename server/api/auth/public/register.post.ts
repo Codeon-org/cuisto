@@ -42,10 +42,10 @@ export default defineEventHandler(async (event) =>
     });
 
     // Generate the tokens (access and refresh)
-    const newDeviceToken = await generateNanoId("refreshToken", "deviceToken", { length: 255 });
+    const accessToken = generateAccessToken({ id: user.id, roles: user.roles });
 
-    const accessToken = generateAccessToken({ id: user.id, roles: user.roles, deviceToken: newDeviceToken });
     const refreshToken = await generateRefreshToken();
+    const fingerprint = await getFingerprint(event);
     const refreshTokenExpiresAt = DateTime.now().toUTC().plus({ days: 90 }).toJSDate();
 
     await prisma.refreshToken.create({
@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) =>
             token: sha512(refreshToken),
             userId: user.id,
             expiresAt: refreshTokenExpiresAt,
-            deviceToken: newDeviceToken
+            deviceFingerprint: fingerprint
         },
     });
 

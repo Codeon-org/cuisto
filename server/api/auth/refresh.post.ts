@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) =>
 {
     // Get data from the context
     const { id: userId, roles: userRoles } = event.context.user;
-    const { token: deviceToken } = event.context.device;
+    // const { token: deviceToken } = event.context.device;
 
     // Read the request body
     const body = await readValidatedBody(event, bodySchema.parse);

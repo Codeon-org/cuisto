@@ -17,13 +17,13 @@ enum Role {
 }
 
 model RefreshToken {
-  id          String   @id @default(uuid()) @db.Uuid
-  token       String   @unique
-  deviceToken String   @unique
-  userId      String   @db.Uuid
-  user        User     @relation("RefreshTokenUser", fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt   DateTime
-  createdAt   DateTime @default(now())
+  id                String   @id @default(uuid()) @db.Uuid
+  token             String   @unique
+  deviceFingerprint String
+  userId            String   @db.Uuid
+  user              User     @relation("RefreshTokenUser", fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt         DateTime
+  createdAt         DateTime @default(now())
 }
 
 model User {

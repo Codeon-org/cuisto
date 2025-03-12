@@ -50,9 +50,9 @@ export default defineEventHandler(async (event) =>
         roles: decoded.roles
     };
 
-    event.context.device = {
-        token: decoded.deviceToken
-    };
+    // event.context.device = {
+    //     token: decoded.deviceToken
+    // };
 
     if (requiredRoles.includes(Roles.Authenticated))
     {

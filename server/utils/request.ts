@@ -1,8 +1,8 @@
-import type { H3Event } from "h3";
+import type { H3Event, EventHandlerRequest } from "h3";
 import { z } from "zod";
 import { defu } from "defu";
 
-export const getPagination = (request: H3Event) =>
+export const getPagination = (request: H3Event<EventHandlerRequest>) =>
 {
     const querySchema = z.object({
         page: validation.pagination.page.optional(),
@@ -26,3 +26,18 @@ export const getPagination = (request: H3Event) =>
         }
     };
 };
+
+export const getFingerprint = async (event: H3Event<EventHandlerRequest>) => {
+    const fingerprint = await getRequestFingerprint(event, {
+        hash: "SHA-1",
+        ip: true,
+        userAgent: true,
+        xForwardedFor: true,
+    });
+
+    if(!fingerprint) {
+        throw new Error("Fingerprint is null");
+    }
+
+    return fingerprint;
+}

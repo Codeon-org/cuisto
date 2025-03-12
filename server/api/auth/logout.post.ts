@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) =>
     const { id: userId } = event.context.user;
 
     // Get device token from the context
-    const { token: deviceToken } = event.context.device;
+    // const { token: deviceToken } = event.context.device;
 
     // Delete all refresh tokens associated with the current user and the current device id
     await prisma.refreshToken.deleteMany({
