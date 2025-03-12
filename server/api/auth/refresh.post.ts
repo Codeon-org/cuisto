@@ -9,14 +9,14 @@ export default defineEventHandler(async (event) =>
 {
     // Get data from the context
     const { id: userId, roles: userRoles } = event.context.user;
-    // const { token: deviceToken } = event.context.device;
+    const { fingerprint } = event.context.device;
 
     // Read the request body
     const body = await readValidatedBody(event, bodySchema.parse);
 
     const refreshToken = await prisma.refreshToken.findUnique({
         where: {
-            deviceToken: deviceToken,
+            deviceFingerprint: fingerprint,
             token: sha512(body.refresh_token),
             userId: userId
         },
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) =>
     }
 
     // Generate access and refresh tokens
-    const accessToken = generateAccessToken({ id: userId, roles: userRoles, deviceToken });
+    const accessToken = generateAccessToken({ id: userId, roles: userRoles });
     const newRefreshToken = await generateRefreshToken();
     const refreshTokenExpiresAt = DateTime.now().toUTC().plus({ days: 90 }).toJSDate();
 

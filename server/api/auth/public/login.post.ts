@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) =>
         where: {
             AND: [
                 { userId: user.id },
-                {deviceFingerprint: fingerprint}
+                { deviceFingerprint: fingerprint },
             ]
         }
     });

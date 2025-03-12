@@ -6,7 +6,7 @@ export type UserContext = {
 };
 
 export type DeviceContext = {
-    token: string;
+    fingerprint: string;
 };
 
 export type JwtContext = {
