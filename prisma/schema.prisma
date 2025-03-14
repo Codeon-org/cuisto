@@ -39,7 +39,6 @@ model User {
   houses             House[]           @relation("HouseMember")
   invitationCreated  HouseInvitation[] @relation("InvitationAuthor")
   invitationReceived HouseInvitation[] @relation("InvitationReceiver")
-  products           Product[]         @relation("ProductUser")
 }
 
 model House {
@@ -75,8 +74,6 @@ model Product {
   updatedAt DateTime @updatedAt
   houseId   String   @db.Uuid
   house     House    @relation("ProductHouse", fields: [houseId], references: [id], onDelete: Cascade)
-  creatorId String   @db.Uuid
-  creator   User     @relation("ProductUser", fields: [creatorId], references: [id], onDelete: Cascade)
 }
 
 // model Unit {
