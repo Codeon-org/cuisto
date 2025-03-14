@@ -39,6 +39,7 @@ model User {
   houses             House[]           @relation("HouseMember")
   invitationCreated  HouseInvitation[] @relation("InvitationAuthor")
   invitationReceived HouseInvitation[] @relation("InvitationReceiver")
+  products           Product[]         @relation("ProductUser")
 }
 
 model House {
@@ -50,6 +51,7 @@ model House {
   owner           User              @relation("HouseOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   users           User[]            @relation("HouseMember")
   houseInvitation HouseInvitation[] @relation("HouseInvitations")
+  products        Product[]         @relation("ProductHouse")
 }
 
 model HouseInvitation {
@@ -66,6 +68,17 @@ model HouseInvitation {
   receiver   User     @relation("InvitationReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
 }
 
+model Product {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  houseId   String   @db.Uuid
+  house     House    @relation("ProductHouse", fields: [houseId], references: [id], onDelete: Cascade)
+  creatorId String   @db.Uuid
+  creator   User     @relation("ProductUser", fields: [creatorId], references: [id], onDelete: Cascade)
+}
+
 // model Unit {
 //   id               Int       @id @default(autoincrement())
 //   name             String    @unique
@@ -77,17 +90,6 @@ model HouseInvitation {
 //   createdAt        DateTime  @default(now()) @map("created_at")
 //   updatedAt        DateTime  @default(now()) @map("updated_at")
 //   products         Product[]
-
-//   recipes RecipeProduct[]
-// }
-
-// model Product {
-//   id        Int      @id @default(autoincrement())
-//   name      String
-//   unitId    Int
-//   unit      Unit     @relation(fields: [unitId], references: [id], onDelete: Restrict)
-//   createdAt DateTime @default(now()) @map("created_at")
-//   updatedAt DateTime @default(now()) @map("updated_at")
 
 //   recipes RecipeProduct[]
 // }
