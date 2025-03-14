@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) =>
     }
 
     // If route is fully restricted (Roles.None), deny access
-    if (requiredRoles.includes(Roles.None))
+    if (requiredRoles.includes(Roles.Deny))
     {
         throw createError({
             statusCode: 403,

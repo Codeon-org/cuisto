@@ -30,6 +30,9 @@ export default defineNuxtConfig({
     },
     compatibilityDate: "2025-02-09",
     nitro: {
+        experimental: {
+            websocket: true
+        },
         imports: {
             dirs: [
                 "./server/config/**",
