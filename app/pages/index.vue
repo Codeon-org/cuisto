@@ -1,15 +1,16 @@
 <template>
     <div>
-        <UButton>Hello {{ data ?? "World !" }}</UButton>
+        <ULink to="/test">
+            Test
+        </ULink>
     </div>
 </template>
 
 <script setup lang="ts">
-const data = ref(null);
-
-useSocket<string>(EventTypes.newUser, (event) =>
-{
-    console.log(event);
-    data.value = JSON.parse(event.data);
+useSocket({
+    newUser: (name) =>
+    {
+        console.log(name);
+    }
 });
 </script>

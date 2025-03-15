@@ -1,3 +1,5 @@
+import pkg from "./package.json";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     modules: [
@@ -24,6 +26,13 @@ export default defineNuxtConfig({
         options: {
             scrollBehaviorType: "smooth"
         }
+    },
+    runtimeConfig: {
+        public: {
+            apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
+            wsUrl: process.env.NUXT_PUBLIC_WS_URL,
+            appVersion: pkg.version,
+        },
     },
     future: {
         compatibilityVersion: 4,

@@ -10,5 +10,7 @@ declare namespace NodeJS
         SMTP_PASSWORD: string;
         SMTP_FROM: string;
         LOG_LEVEL: string;
+        NUXT_PUBLIC_WS_URL: string;
+        NUXT_PUBLIC_API_BASE_URL: string;
     }
 }

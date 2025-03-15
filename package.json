@@ -2,6 +2,7 @@
     "name": "codeon-cuisto",
     "private": true,
     "type": "module",
+    "version": "0.0.1",
     "scripts": {
         "build": "nuxt build",
         "dev": "nuxt dev --no-fork",
@@ -26,6 +27,7 @@
         "@vueuse/nuxt": "12.7.0",
         "argon2": "^0.41.1",
         "defu": "^6.1.4",
+        "destr": "^2.0.3",
         "handlebars": "^4.7.8",
         "ip-address": "^10.0.1",
         "jsonwebtoken": "^9.0.2",
@@ -68,3 +70,4 @@
         ]
     }
 }
+

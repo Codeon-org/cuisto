@@ -1,8 +1,16 @@
-export const useSocket = <T>(type: EventType | EventType[], callback: (event: MessageEvent<T>) => void | Promise<void>) =>
-{
-    const eventTypes = Array.isArray(type) ? type : [type];
+import { destr } from "destr";
 
-    const { eventSource } = useEventSource("/api/_ws", eventTypes, {
+type EventCallbackMap = {
+    newUser: string;
+};
+
+export const useSocket = <E extends keyof EventCallbackMap>(eventCallbacks: { [K in E]: (payload: EventCallbackMap[K]) => void | Promise<void> }) =>
+{
+    const config = useRuntimeConfig().public;
+
+    const eventTypes = Object.keys(eventCallbacks) as E[];
+
+    const { eventSource } = useEventSource(config.wsUrl, eventTypes, {
         autoConnect: true,
         autoReconnect: true,
         immediate: true,
@@ -10,19 +18,25 @@ export const useSocket = <T>(type: EventType | EventType[], callback: (event: Me
 
     eventTypes.forEach((eventType) =>
     {
-        eventSource.value?.addEventListener(eventType, async (event) =>
+        const callback = eventCallbacks[eventType];
+
+        eventSource.value?.addEventListener(eventType as string, async (event) =>
         {
-            await callback(event);
+            const data = destr<EventCallbackMap[typeof eventType]>(event.data);
+
+            await callback(data);
         });
     });
 
+    // Cleanup on component unmount
     onUnmounted(() =>
     {
-        console.log("Unmounting socket");
         eventTypes.forEach((eventType) =>
         {
-            eventSource.value?.removeEventListener(eventType, callback);
+            const callback = eventCallbacks[eventType];
+            eventSource.value?.removeEventListener(eventType as string, callback as unknown as EventListener);
         });
+
         eventSource.value?.close();
     });
 

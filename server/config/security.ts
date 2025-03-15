@@ -13,7 +13,7 @@ export const Roles: Record<Role, Role> = {
 // If the route has no match, it will be available for everyone.
 // Only the first match will be used.
 export default {
-    "/api/_ws": [Roles.Authenticated],
+    "/api/_ws": [Roles.Guest],
     "/api/ping": [Roles.Guest],
     "/api/auth/public/**": [Roles.Guest],
     "/api/**": [Roles.Authenticated],
