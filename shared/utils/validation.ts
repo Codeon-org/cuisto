@@ -37,5 +37,13 @@ export default {
         name: z.string()
             .min(3, "House name must be at least 3 characters long")
             .max(50, "House name must be at most 50 characters long"),
+    },
+    product: {
+        name: z.string()
+            .min(3, "Product name must be at least 3 characters long")
+            .max(50, "Product name must be at most 50 characters long"),
+
+        barcode: z.string()
+            .nullable()
     }
 };

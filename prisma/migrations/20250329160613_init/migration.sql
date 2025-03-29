@@ -5,7 +5,7 @@ CREATE TYPE "Role" AS ENUM ('User');
 CREATE TABLE "RefreshToken" (
     "id" UUID NOT NULL,
     "token" TEXT NOT NULL,
-    "deviceToken" TEXT NOT NULL,
+    "deviceFingerprint" TEXT NOT NULL,
     "userId" UUID NOT NULL,
     "expiresAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -52,6 +52,18 @@ CREATE TABLE "HouseInvitation" (
 );
 
 -- CreateTable
+CREATE TABLE "Product" (
+    "id" UUID NOT NULL,
+    "name" TEXT NOT NULL,
+    "barCode" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "houseId" UUID NOT NULL,
+
+    CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_HouseMember" (
     "A" UUID NOT NULL,
     "B" UUID NOT NULL,
@@ -61,9 +73,6 @@ CREATE TABLE "_HouseMember" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RefreshToken_token_key" ON "RefreshToken"("token");
-
--- CreateIndex
-CREATE UNIQUE INDEX "RefreshToken_deviceToken_key" ON "RefreshToken"("deviceToken");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
@@ -91,6 +100,9 @@ ALTER TABLE "HouseInvitation" ADD CONSTRAINT "HouseInvitation_authorId_fkey" FOR
 
 -- AddForeignKey
 ALTER TABLE "HouseInvitation" ADD CONSTRAINT "HouseInvitation_receiverId_fkey" FOREIGN KEY ("receiverId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Product" ADD CONSTRAINT "Product_houseId_fkey" FOREIGN KEY ("houseId") REFERENCES "House"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_HouseMember" ADD CONSTRAINT "_HouseMember_A_fkey" FOREIGN KEY ("A") REFERENCES "House"("id") ON DELETE CASCADE ON UPDATE CASCADE;

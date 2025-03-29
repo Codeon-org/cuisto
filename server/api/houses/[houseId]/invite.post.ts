@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 import { z } from "zod";
 
 const urlSchema = z.object({
-    id: validation.common.id
+    houseId: validation.common.id
 });
 
 const bodySchema = z.object({
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) =>
     const { id: userId } = event.context.user;
 
     // Get the house ID from the path
-    const { id: houseId } = await getValidatedRouterParams(event, urlSchema.parse);
+    const url = await getValidatedRouterParams(event, urlSchema.parse);
 
     // Get the user email from the request body
     const body = await readValidatedBody(event, bodySchema.parse);
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) =>
     // Find the house with the given ID
     const house = await prisma.house.findFirst({
         where: {
-            id: houseId
+            id: url.houseId
         },
         select: {
             ownerId: true,
@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) =>
     {
         throw createError({
             statusCode: 404,
-            statusMessage: `No house found with id '${houseId}'`
+            statusMessage: `No house found with id '${url.houseId}'`
         });
     }
 
@@ -83,7 +83,7 @@ export default defineEventHandler(async (event) =>
     // Check if there is already an invitation for the user that is not expired
     const existingInvitation = await prisma.houseInvitation.findFirst({
         where: {
-            houseId: houseId,
+            houseId: url.houseId,
             receiverId: user.id,
             isUsed: false,
             expiresAt: {
@@ -104,7 +104,7 @@ export default defineEventHandler(async (event) =>
     const token = await generateNanoId("houseInvitation", "token", { length: 255 });
     const invite = await prisma.houseInvitation.create({
         data: {
-            houseId: houseId,
+            houseId: url.houseId,
             receiverId: user.id,
             authorId: userId,
             token,
@@ -113,10 +113,14 @@ export default defineEventHandler(async (event) =>
     });
 
     // Send an email to the user
-    await sendMail({
+    await sendMjmlMail({
         to: user.email,
         subject: `You have been invited to the house: ${house.name}`,
-        text: `You have been invited to the house: ${house.name}. Use the following token to accept the invitation:\n\n${invite.token}\n\nIt will expire in 7 days.`
+        template: "HouseInvitation",
+        params: {
+            firstName: user.username,
+            token: invite.token
+        }
     });
 
     // Return a success response with status code "No Content (204)"
