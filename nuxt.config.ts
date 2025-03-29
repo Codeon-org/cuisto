@@ -59,7 +59,7 @@ export default defineNuxtConfig({
             }
         }
     },
-    debug: process.env.NODE_ENV === "development",
+    // debug: process.env.NODE_ENV === "development",
     copyFiles: {
         sources: ["./email"],
         root: "dir"

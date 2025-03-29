@@ -44,7 +44,6 @@
         "ua-parser-js": "^2.0.2",
         "uuid": "^11.1.0",
         "vue": "latest",
-        "vue-barcode-reader": "^1.0.3",
         "vue-router": "latest",
         "winston": "^3.17.0",
         "zod": "^3.24.2"
@@ -56,7 +55,6 @@
         "@types/luxon": "^3.4.2",
         "@types/mjml": "^4.7.4",
         "@types/nodemailer": "^6.4.17",
-        "@types/vue-barcode-reader": "^0.0.3",
         "@vue/test-utils": "^2.4.6",
         "eslint": "^9.22.0",
         "happy-dom": "^17.4.1",
