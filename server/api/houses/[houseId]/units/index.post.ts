@@ -80,7 +80,7 @@ export default defineEventHandler(async (event) =>
             name: body.name,
             symbol: body.symbol,
             houseId: url.houseId,
-            formula: body.formula ?? null,
+            formula: body.baseUnitId ? body.formula ?? null : null,
             baseUnitId: body.baseUnitId ?? null,
         },
     });
