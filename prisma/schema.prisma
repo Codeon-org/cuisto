@@ -80,7 +80,7 @@ model Unit {
   id         String   @id @default(uuid()) @db.Uuid
   name       String
   symbol     String
-  formula    String
+  formula    String?
   baseUnitId String?  @db.Uuid
   baseUnit   Unit?    @relation("BaseUnit", fields: [baseUnitId], references: [id])
   variations Unit[]   @relation("BaseUnit")

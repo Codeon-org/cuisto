@@ -7,7 +7,7 @@ const urlSchema = z.object({
 const bodySchema = z.object({
     name: validation.unit.name,
     symbol: validation.unit.symbol,
-    formula: validation.unit.formula,
+    formula: validation.unit.formula.optional(),
     baseUnitId: validation.common.id.optional(),
 });
 
@@ -43,6 +43,14 @@ export default defineEventHandler(async (event) =>
     // Check if the base unit exists
     if (body.baseUnitId)
     {
+        if (!body.formula)
+        {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Missing formula"
+            });
+        }
+
         const baseUnit = await prisma.unit.findUnique({
             where: {
                 id: body.baseUnitId,
@@ -57,22 +65,22 @@ export default defineEventHandler(async (event) =>
                 statusMessage: "Base unit not found"
             });
         }
-    }
 
-    if (!isFormulaValid(body.formula, { x: 1 }))
-    {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Invalid formula"
-        });
+        if (!isFormulaValid(body.formula, { x: 1 }))
+        {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Invalid formula"
+            });
+        }
     }
 
     const unit = await prisma.unit.create({
         data: {
             name: body.name,
             symbol: body.symbol,
-            formula: body.formula,
             houseId: url.houseId,
+            formula: body.formula ?? null,
             baseUnitId: body.baseUnitId ?? null,
         },
     });
