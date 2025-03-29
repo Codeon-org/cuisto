@@ -5,8 +5,10 @@ const urlSchema = z.object({
 });
 
 const bodySchema = z.object({
-    name: validation.product.name,
-    barcode: validation.product.barcode,
+    name: validation.unit.name,
+    symbol: validation.unit.symbol,
+    formula: validation.unit.formula,
+    baseUnitId: validation.common.id.optional(),
 });
 
 export default defineEventHandler(async (event) =>
@@ -37,15 +39,43 @@ export default defineEventHandler(async (event) =>
     }
 
     const body = await readValidatedBody(event, bodySchema.parse);
-    const safeBarcode = body.barcode?.trim() === "" ? null : body.barcode;
 
-    const product = await prisma.product.create({
+    // Check if the base unit exists
+    if (body.baseUnitId)
+    {
+        const baseUnit = await prisma.unit.findUnique({
+            where: {
+                id: body.baseUnitId,
+                houseId: url.houseId,
+            },
+        });
+
+        if (!baseUnit)
+        {
+            throw createError({
+                statusCode: 404,
+                statusMessage: "Base unit not found"
+            });
+        }
+    }
+
+    if (!isFormulaValid(body.formula, { x: 1 }))
+    {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Invalid formula"
+        });
+    }
+
+    const unit = await prisma.unit.create({
         data: {
             name: body.name,
-            barcode: safeBarcode,
+            symbol: body.symbol,
+            formula: body.formula,
             houseId: url.houseId,
+            baseUnitId: body.baseUnitId ?? null,
         },
     });
 
-    return product;
+    return unit;
 });

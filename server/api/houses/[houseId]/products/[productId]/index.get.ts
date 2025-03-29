@@ -5,16 +5,10 @@ const urlSchema = z.object({
     productId: validation.common.id
 });
 
-const bodySchema = z.object({
-    name: validation.product.name.optional(),
-    barcode: validation.product.barcode.optional(),
-});
-
 export default defineEventHandler(async (event) =>
 {
     const { id: userId } = event.context.user;
     const url = await getValidatedRouterParams(event, urlSchema.parse);
-    const body = await readValidatedBody(event, bodySchema.parse);
 
     const house = await prisma.house.findFirst({
         where: {
@@ -39,14 +33,14 @@ export default defineEventHandler(async (event) =>
     }
 
     // Check if the product exists in the house
-    const existingProduct = await prisma.product.findFirst({
+    const product = await prisma.product.findFirst({
         where: {
             id: url.productId,
             houseId: url.houseId,
         },
     });
 
-    if (!existingProduct)
+    if (!product)
     {
         throw createError({
             statusCode: 404,
@@ -54,33 +48,5 @@ export default defineEventHandler(async (event) =>
         });
     }
 
-    // Check if the barcode already exists in the house
-    if (body.barcode)
-    {
-        const existingProduct = await prisma.product.findFirst({
-            where: {
-                barcode: body.barcode,
-                houseId: url.houseId
-            },
-        });
-
-        if (existingProduct)
-        {
-            throw createError({
-                statusCode: 400,
-                statusMessage: "A product with this barcode already exists",
-            });
-        }
-    }
-
-    // Update the product in the database
-    const updatedProduct = await prisma.product.update({
-        where: {
-            id: url.productId,
-            houseId: url.houseId,
-        },
-        data: body,
-    });
-
-    return updatedProduct;
+    return product;
 });

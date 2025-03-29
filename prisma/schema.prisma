@@ -10,8 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Can use the ///@serialize("groups_name") to serialize only some fields combined with the serializePrismaData utils.
-
 enum Role {
   User
 }
@@ -51,6 +49,7 @@ model House {
   users           User[]            @relation("HouseMember")
   houseInvitation HouseInvitation[] @relation("HouseInvitations")
   products        Product[]         @relation("ProductHouse")
+  units           Unit[]            @relation("UnitHouse")
 }
 
 model HouseInvitation {
@@ -77,20 +76,19 @@ model Product {
   house     House    @relation("ProductHouse", fields: [houseId], references: [id], onDelete: Cascade)
 }
 
-// model Unit {
-//   id               Int       @id @default(autoincrement())
-//   name             String    @unique
-//   symbol           String    @unique
-//   conversionFactor Float?
-//   baseUnitId       Int?
-//   baseUnit         Unit?     @relation("BaseUnit", fields: [baseUnitId], references: [id])
-//   variations       Unit[]    @relation("BaseUnit")
-//   createdAt        DateTime  @default(now()) @map("created_at")
-//   updatedAt        DateTime  @default(now()) @map("updated_at")
-//   products         Product[]
-
-//   recipes RecipeProduct[]
-// }
+model Unit {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String
+  symbol     String
+  formula    String
+  baseUnitId String?  @db.Uuid
+  baseUnit   Unit?    @relation("BaseUnit", fields: [baseUnitId], references: [id])
+  variations Unit[]   @relation("BaseUnit")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  houseId    String   @db.Uuid
+  house      House    @relation("UnitHouse", fields: [houseId], references: [id], onDelete: Cascade)
+}
 
 // model Recipe {
 //   id          Int      @id @default(autoincrement())

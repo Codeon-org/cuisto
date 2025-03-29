@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export default {
     common: {
-        id: z.string().uuid("ID must be a valid UUID")
+        id: z.string().uuid("Must be a valid UUID")
     },
     pagination: {
         page: z.number()
@@ -45,5 +45,17 @@ export default {
 
         barcode: z.string()
             .nullable()
+    },
+    unit: {
+        name: z.string()
+            .min(3, "Unit name must be at least 3 characters long")
+            .max(50, "Unit name must be at most 50 characters long"),
+
+        symbol: z.string()
+            .min(1, "Unit symbol must be at least 1 character long"),
+
+        formula: z.string()
+            .min(1, "Unit formula must be at least 1 character long")
+            .max(100, "Unit formula must be at most 100 characters long"),
     }
 };

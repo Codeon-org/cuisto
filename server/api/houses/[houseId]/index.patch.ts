@@ -19,10 +19,13 @@ export default defineEventHandler(async (event) =>
     // Get the body from the event
     const body = await readValidatedBody(event, bodySchema.parse);
 
-    // Check if the house exists and if the user is the owner
+    // Check if the house exists
     const house = await prisma.house.findFirst({
         where: {
-            id: url.houseId,
+            AND: [
+                { id: url.houseId },
+                { ownerId: userId },
+            ],
         }
     });
 
@@ -32,14 +35,6 @@ export default defineEventHandler(async (event) =>
         throw createError({
             statusCode: 404,
             statusMessage: "House not found",
-        });
-    }
-
-    if (house.ownerId !== userId)
-    {
-        throw createError({
-            statusCode: 403,
-            statusMessage: "You are not the owner of this house",
         });
     }
 

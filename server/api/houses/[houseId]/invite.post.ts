@@ -23,7 +23,10 @@ export default defineEventHandler(async (event) =>
     // Find the house with the given ID
     const house = await prisma.house.findFirst({
         where: {
-            id: url.houseId
+            AND: [
+                { id: url.houseId },
+                { ownerId: userId },
+            ],
         },
         select: {
             ownerId: true,
@@ -36,20 +39,12 @@ export default defineEventHandler(async (event) =>
         }
     });
 
+    // If the house doesn't exist, throw a 404 error
     if (!house)
     {
         throw createError({
             statusCode: 404,
-            statusMessage: `No house found with id '${url.houseId}'`
-        });
-    }
-
-    // Check if the user is the owner of the house
-    if (house.ownerId !== userId)
-    {
-        throw createError({
-            statusCode: 403,
-            statusMessage: "You are not the owner of this house"
+            statusMessage: `House not found`
         });
     }
 

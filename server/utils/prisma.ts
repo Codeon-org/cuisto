@@ -6,7 +6,7 @@ const prismaClientSingleton = () =>
         omit: {
             user: {
                 password: true
-            }
+            },
         }
     });
 };

@@ -55,12 +55,26 @@ CREATE TABLE "HouseInvitation" (
 CREATE TABLE "Product" (
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
-    "barCode" TEXT,
+    "barcode" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "houseId" UUID NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Unit" (
+    "id" UUID NOT NULL,
+    "name" TEXT NOT NULL,
+    "symbol" TEXT NOT NULL,
+    "formula" TEXT NOT NULL,
+    "baseUnitId" UUID,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "houseId" UUID NOT NULL,
+
+    CONSTRAINT "Unit_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -103,6 +117,12 @@ ALTER TABLE "HouseInvitation" ADD CONSTRAINT "HouseInvitation_receiverId_fkey" F
 
 -- AddForeignKey
 ALTER TABLE "Product" ADD CONSTRAINT "Product_houseId_fkey" FOREIGN KEY ("houseId") REFERENCES "House"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Unit" ADD CONSTRAINT "Unit_baseUnitId_fkey" FOREIGN KEY ("baseUnitId") REFERENCES "Unit"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Unit" ADD CONSTRAINT "Unit_houseId_fkey" FOREIGN KEY ("houseId") REFERENCES "House"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_HouseMember" ADD CONSTRAINT "_HouseMember_A_fkey" FOREIGN KEY ("A") REFERENCES "House"("id") ON DELETE CASCADE ON UPDATE CASCADE;
