@@ -2,11 +2,12 @@ import { z } from "zod";
 
 const urlSchema = z.object({
     houseId: validation.common.id,
+    unitId: validation.common.id,
 });
 
 const bodySchema = z.object({
-    name: validation.unit.name,
-    symbol: validation.unit.symbol,
+    name: validation.unit.name.optional(),
+    symbol: validation.unit.symbol.optional(),
     formula: validation.unit.formula.optional(),
     baseUnitId: validation.common.id.optional(),
 });
@@ -38,10 +39,26 @@ export default defineEventHandler(async (event) =>
         });
     }
 
+    // check if the unit exists
+    const unit = await prisma.unit.findFirst({
+        where: {
+            id: url.unitId,
+            houseId: url.houseId,
+        },
+    });
+
+    if (!unit)
+    {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "Unit not found"
+        });
+    }
+
     const body = await readValidatedBody(event, bodySchema.parse);
 
     // Check that the unit has a base unit if it has a formula
-    if (body.formula && !body.baseUnitId)
+    if (body.formula && !unit.baseUnitId && !body.baseUnitId)
     {
         throw createError({
             statusCode: 400,
@@ -49,7 +66,7 @@ export default defineEventHandler(async (event) =>
         });
     }
 
-    if (body.baseUnitId && !body.formula)
+    if (body.baseUnitId && !unit.formula && !body.formula)
     {
         throw createError({
             statusCode: 400,
@@ -84,7 +101,10 @@ export default defineEventHandler(async (event) =>
         }
     }
 
-    const unit = await prisma.unit.create({
+    const newUnit = await prisma.unit.update({
+        where: {
+            id: url.unitId,
+        },
         data: {
             name: body.name,
             symbol: body.symbol,
@@ -94,5 +114,5 @@ export default defineEventHandler(async (event) =>
         },
     });
 
-    return unit;
+    return newUnit;
 });

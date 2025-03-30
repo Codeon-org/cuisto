@@ -4,10 +4,6 @@ const urlSchema = z.object({
     houseId: validation.common.id
 });
 
-const bodySchema = z.object({
-    name: validation.house.name.optional(),
-});
-
 export default defineEventHandler(async (event) =>
 {
     // Get houseId from url
@@ -15,9 +11,6 @@ export default defineEventHandler(async (event) =>
 
     // Get the userId from the event context
     const { id: userId } = event.context.user;
-
-    // Get the body from the event
-    const body = await readValidatedBody(event, bodySchema.parse);
 
     // Check if the house exists
     const house = await prisma.house.findFirst({
@@ -36,13 +29,12 @@ export default defineEventHandler(async (event) =>
         });
     }
 
-    // Update the house
-    const updatedHouse = await prisma.house.update({
+    // Delete the house
+    await prisma.house.delete({
         where: {
             id: url.houseId,
         },
-        data: body,
     });
 
-    return updatedHouse;
+    return null;
 });

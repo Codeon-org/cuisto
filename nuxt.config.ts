@@ -46,6 +46,7 @@ export default defineNuxtConfig({
             dirs: [
                 "./server/config/**",
                 "./server/types/**",
+                "./server/voter/**",
             ]
         },
         storage: {
